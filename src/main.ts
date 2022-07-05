@@ -10,5 +10,7 @@ import '@/assets/styles/common.less'
 // 导入路由 
 import router from './router'
 
+// 导入 pinia 并注册
+import { createPinia } from 'pinia'
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(router).use(createPinia()).mount('#app')
