@@ -7,11 +7,10 @@
       <RouterLink to="/">{{ item.name }}</RouterLink>
       <div class="layer">
         <ul>
-          <li v-for="i in 10" :key="i">
+          <li v-for="sub in item.children" :key="sub.id">
             <a href="#">
-              <img src="https://yanxuan.nosdn.127.net/cc361cf40d4f81c7eccefed1ad18face.png?quality=95&imageView"
-                alt="" />
-              <p>果干</p>
+              <img :src="sub.picture" alt="" />
+              <p>{{ sub.name }}</p>
             </a>
           </li>
         </ul>
