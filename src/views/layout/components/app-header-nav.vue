@@ -3,20 +3,19 @@
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li><a href="#">美食</a></li>
-    <li><a href="#">餐厨</a></li>
-    <li><a href="#">艺术</a></li>
-    <li><a href="#">电器</a></li>
-    <li><a href="#">居家</a></li>
-    <li><a href="#">洗护</a></li>
-    <li><a href="#">孕婴</a></li>
-    <li><a href="#">服装</a></li>
-    <li><a href="#">杂货</a></li>
+    <li v-for="item in category.list" :key="item.id">
+      <RouterLink to="/">{{ item.name }}</RouterLink>
+    </li>
   </ul>
 </template>
 
 <script setup lang="ts">
+import useStore from '@/store'
 
+const { category } = useStore()
+
+// 获取头部分类
+category.getAllCategory()
 </script>
 
 <style scoped lang="less">
