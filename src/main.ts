@@ -6,4 +6,9 @@ import 'normalize.css'
 
 // 导入公共样式
 import '@/assets/styles/common.less'
-createApp(App).mount('#app')
+
+// 导入路由 
+import router from './router'
+
+
+createApp(App).use(router).mount('#app')
