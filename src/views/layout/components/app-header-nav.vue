@@ -5,7 +5,8 @@
     </li>
     <li v-for="item in category.list" :key="item.id">
       <RouterLink to="/">{{ item.name }}</RouterLink>
-      <div class="layer">
+      <!-- v-if: 优化网速慢 hover 时显示空盒子 -->
+      <div class="layer" v-if="item.children">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
             <a href="#">

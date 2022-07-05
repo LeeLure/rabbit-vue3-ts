@@ -1,12 +1,16 @@
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
 import { ApiRes, CategoryItem } from '@/types/data'
+import { topCategory } from './constants'
+
+// perf: 给一级分类导航名字套个壳子，解决网速慢时分类显示不及时
+const defaultList = topCategory.map(item => ({ name: item }))
 
 // defineStore 返回的是一个函数
 export default defineStore('category', {
   state() {
     return {
-      list: [] as CategoryItem[]
+      list: defaultList as CategoryItem[]
     }
   },
 
