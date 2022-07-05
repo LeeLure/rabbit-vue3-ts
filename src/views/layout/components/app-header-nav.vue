@@ -5,6 +5,17 @@
     </li>
     <li v-for="item in category.list" :key="item.id">
       <RouterLink to="/">{{ item.name }}</RouterLink>
+      <div class="layer">
+        <ul>
+          <li v-for="i in 10" :key="i">
+            <a href="#">
+              <img src="https://yanxuan.nosdn.127.net/cc361cf40d4f81c7eccefed1ad18face.png?quality=95&imageView"
+                alt="" />
+              <p>果干</p>
+            </a>
+          </li>
+        </ul>
+      </div>
     </li>
   </ul>
 </template>
@@ -26,12 +37,12 @@ category.getAllCategory()
   position: relative;
   z-index: 998;
 
-  li {
+  >li {
     margin-right: 40px;
     width: 38px;
     text-align: center;
 
-    a {
+    >a {
       font-size: 16px;
       line-height: 32px;
       height: 32px;
@@ -40,6 +51,61 @@ category.getAllCategory()
       &:hover {
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
+      }
+    }
+
+    // 新增样式
+    &:hover {
+      >a {
+        color: @xtxColor;
+        border-bottom: 1px solid @xtxColor;
+      }
+
+      >.layer {
+        height: 132px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// 新增样式
+.layer {
+  width: 1240px;
+  background-color: #fff;
+  position: absolute;
+  left: -200px;
+  top: 56px;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  box-shadow: 0 0 5px #ccc;
+  transition: all 0.2s 0.1s;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 70px;
+    align-items: center;
+    height: 132px;
+
+    li {
+      width: 110px;
+      text-align: center;
+
+      img {
+        width: 60px;
+        height: 60px;
+      }
+
+      p {
+        padding-top: 10px;
+      }
+
+      &:hover {
+        p {
+          color: @xtxColor;
+        }
       }
     }
   }
