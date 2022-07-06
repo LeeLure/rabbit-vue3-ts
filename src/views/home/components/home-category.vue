@@ -1,6 +1,7 @@
 <script lang="ts" setup name="HomeCategory">
 import useStore from '@/store';
 import { computed, ref } from 'vue';
+import Skeleton from '@/components/skeleton/index.vue'
 
 const { category } = useStore()
 
@@ -23,8 +24,17 @@ const goods = computed(() => category.list.find(item => item.id === categoryId.v
       <li :class="{ active: categoryId === item.id }" @mouseenter="hMouseenter(item.id)" v-for="item in category.list"
         :key="item.id">
         <RouterLink :to="`category/${item.id}`">{{ item.name }}</RouterLink>
-        <RouterLink v-for="sub in item.children?.slice(0, 2)" :key="sub.id" :to="`category/sub/${sub.id} `">{{ sub.name
-        }}</RouterLink>
+        <!-- 骨架屏 -->
+        <template v-if="item.children">
+          <RouterLink v-for="sub in item.children?.slice(0, 2)" :key="sub.id" :to="`category/sub/${sub.id} `">{{
+              sub.name
+          }}</RouterLink>
+        </template>
+        <!-- 骨架屏 -->
+        <template v-else>
+          <Skeleton animated :width="70" :height="20" bg="rgba(255, 255, 255, 0.2)" />
+          <Skeleton style="margin-left: 10px" animated :width="40" :height="20" bg="rgba(255, 255, 255, 0.2)" />
+        </template>
       </li>
     </ul>
 
