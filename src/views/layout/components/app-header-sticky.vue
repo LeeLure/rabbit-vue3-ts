@@ -1,20 +1,24 @@
 <script lang="ts" setup name="AppHeaderSticky">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+// import { onBeforeUnmount, onMounted, ref } from 'vue';
 import AppHeaderNav from './app-header-nav.vue'
+import { useScroll } from '@vueuse/core'
 
-const y = ref(0)
-const onScroll = () => {
-  // 获取屏幕滚动的距离  || 浏览器适配
-  y.value = document.documentElement.scrollTop || document.body.scrollTop
-}
+// 使用第三方库实现吸顶重构
+const { y } = useScroll(window)
 
-onMounted(() => {
-  window.addEventListener('scroll', onScroll)
-})
+// const y = ref(0)
+// const onScroll = () => {
+//   // 获取屏幕滚动的距离  || 浏览器适配
+//   y.value = document.documentElement.scrollTop || document.body.scrollTop
+// }
 
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', onScroll)
-})
+// onMounted(() => {
+//   window.addEventListener('scroll', onScroll)
+// })
+
+// onBeforeUnmount(() => {
+//   window.removeEventListener('scroll', onScroll)
+// })
 </script>
 
 <template>
