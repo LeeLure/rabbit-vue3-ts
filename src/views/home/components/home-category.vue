@@ -9,7 +9,8 @@ const categoryId = ref('')
 // 获取鼠标经过的 categoryId
 const hMouseenter = (id: string) => {
   // console.log(id);
-  categoryId.value = id
+  //bug 解决：数据未请求回来时 id 为 undefined 导致所有都高亮了
+  id && (categoryId.value = id)
 }
 
 // 计算属性 去 category 找到 id 相同的元素, 将其 goods 返回
