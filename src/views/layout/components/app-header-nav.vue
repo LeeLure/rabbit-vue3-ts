@@ -4,7 +4,9 @@
       <RouterLink to="/">首页</RouterLink>
     </li>
     <li v-for="item in category.list" :key="item.id">
-      <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
+      <!-- bug：    数据还未请求回来、点击一级分类时地址栏出现 undefined -->
+      <!-- bug解决: 如果没有数据，跳转首页 -->
+      <RouterLink :to="item.id ? `/category/${item.id}` : '/'">{{ item.name }}</RouterLink>
       <!-- v-if: 优化网速慢 hover 时显示空盒子 -->
       <div class="layer" v-if="item.children">
         <ul>
