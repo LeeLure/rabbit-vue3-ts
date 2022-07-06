@@ -3,12 +3,13 @@
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li v-for="item in category.list" :key="item.id">
+    <li @mouseenter="category.show(item.id)" @mouseleave="category.hide(item.id)" @click="category.hide(item.id)"
+      v-for="item in category.list" :key="item.id">
       <!-- bug：    数据还未请求回来、点击一级分类时地址栏出现 undefined -->
       <!-- bug解决: 如果没有数据，跳转首页 -->
       <RouterLink :to="item.id ? `/category/${item.id}` : '/'">{{ item.name }}</RouterLink>
       <!-- v-if: 优化网速慢 hover 时显示空盒子 -->
-      <div class="layer" v-if="item.children">
+      <div :class="{ show: item.show }" class="layer" v-if="item.children">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
             <RouterLink :to="`/category/sub/${sub.id}`">
@@ -63,16 +64,21 @@ category.getAllCategory()
         border-bottom: 1px solid @xtxColor;
       }
 
-      >.layer {
-        height: 132px;
-        opacity: 1;
-      }
+      // >.layer {
+      //   height: 132px;
+      //   opacity: 1;
+      // }
     }
   }
 }
 
 // 新增样式
 .layer {
+  &.show {
+    height: 132px;
+    opacity: 1;
+  }
+
   width: 1240px;
   background-color: #fff;
   position: absolute;

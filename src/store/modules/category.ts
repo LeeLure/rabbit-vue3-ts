@@ -20,6 +20,34 @@ export default defineStore('category', {
       // console.log(res);
 
       this.list = res.data.result
+    },
+
+    show(id: string) {
+      // 找到对应 id 的元素, 将其状态改为 true
+      const item = this.list.find(item => item.id === id)
+      // if (item) {
+      //   item.show = false
+      // }
+
+      // 暴力：
+      // item!.show = false
+
+      // 优雅：
+      item && (item.show = true)  // = 优先级低，所以要加括号
+    },
+
+    hide(id: string) {
+      // 找到对应 id 的元素, 将其状态改为 true
+      const item = this.list.find(item => item.id === id)
+      // if (item) {
+      //   item.show = false
+      // }
+
+      // 暴力：
+      // item!.show = false
+
+      // 优雅：
+      item && (item.show = false)  // = 优先级低，所以要加括号
     }
   }
 })
