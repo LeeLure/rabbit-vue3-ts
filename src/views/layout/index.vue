@@ -9,7 +9,10 @@ import AppFooter from './components/app-footer.vue';
   <div>
     <AppTopnav />
     <AppHeader />
-    <div style="height: 1200px;">二级路由出口 router-view </div>
+    <div class="app-body" style="height: 1200px;">
+      <!-- 二级路由出口 -->
+      <RouterView />
+    </div>
     <AppFooter />
   </div>
 </template>

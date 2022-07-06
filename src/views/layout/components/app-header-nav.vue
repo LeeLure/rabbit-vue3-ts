@@ -4,15 +4,15 @@
       <RouterLink to="/">首页</RouterLink>
     </li>
     <li v-for="item in category.list" :key="item.id">
-      <RouterLink to="/">{{ item.name }}</RouterLink>
+      <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
       <!-- v-if: 优化网速慢 hover 时显示空盒子 -->
       <div class="layer" v-if="item.children">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
-            <a href="#">
+            <RouterLink :to="`/category/sub/${sub.id}`">
               <img :src="sub.picture" alt="" />
               <p>{{ sub.name }}</p>
-            </a>
+            </RouterLink>
           </li>
         </ul>
       </div>
