@@ -17,9 +17,10 @@ const goods = computed(() => category.list.find(item => item.id === categoryId.v
 
 </script>
 <template>
-  <div class="home-category">
+  <div class="home-category" @mouseleave="categoryId = ''">
     <ul class="menu">
-      <li @mouseenter="hMouseenter(item.id)" v-for="item in category.list" :key="item.id">
+      <li :class="{ active: categoryId === item.id }" @mouseenter="hMouseenter(item.id)" v-for="item in category.list"
+        :key="item.id">
         <RouterLink :to="`category/${item.id}`">{{ item.name }}</RouterLink>
         <RouterLink v-for="sub in item.children?.slice(0, 2)" :key="sub.id" :to="`category/sub/${sub.id} `">{{ sub.name
         }}</RouterLink>
@@ -61,7 +62,8 @@ const goods = computed(() => category.list.find(item => item.id === categoryId.v
       height: 55px;
       line-height: 55px;
 
-      &:hover {
+      &:hover,
+      &.active {
         background: @xtxColor;
       }
 
