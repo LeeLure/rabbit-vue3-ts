@@ -16,7 +16,8 @@ home.getNewList()
       <ul class="goods-list">
         <li v-for="item in home.newList" :key="item.id">
           <RouterLink to="/">
-            <img :src="item.picture" alt="" />
+            <!-- 自定义指令：图片懒加载 -->
+            <img v-slowimage="item.picture" alt="" />
             <p class="name ellipsis">{{ item.name }}</p>
             <p class="price">&yen;{{ item.price }}</p>
           </RouterLink>

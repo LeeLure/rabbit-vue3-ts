@@ -11,7 +11,8 @@ home.getHotList()
     <ul ref="pannel" class="goods-list">
       <li v-for="item in home.hotList" :key="item.id">
         <RouterLink to="/">
-          <img :src="item.picture" alt="" />
+          <!-- 自定义指令：图片懒加载 -->
+          <img v-slowimage="item.picture" alt="" />
           <p class="name">{{ item.title }}</p>
           <p class="desc">{{ item.alt }}</p>
         </RouterLink>
