@@ -8,7 +8,7 @@
 // })
 
 import { BannerItem } from '@/types/data';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps<{ slides: BannerItem[] }>()
 
@@ -32,10 +32,43 @@ const next = () => {
     active.value = 0
   }
 }
+
+// 自动轮播
+let timerId = -1
+
+// 开始自动轮播 start()
+// setInterval(() => {
+//   next()
+// }, 2500)
+
+// 鼠标进入轮播图停止自动轮播
+const stop = () => {
+  // 清除定时器
+  clearInterval(timerId)
+}
+
+// 鼠标离开轮播图开始自动轮播
+const start = () => {
+  // 开始自动轮播
+  // 在 TS 里调用 setInterval 需要加上 window
+  timerId = window.setInterval(() => {
+    next()
+  }, 2500)
+}
+
+// 组件挂载时开启定时器
+onMounted(() => {
+  start()
+})
+
+// 组件卸载时暂停定时器
+onUnmounted(() => {
+  stop()
+})
 </script>
 
 <template>
-  <div class="xtx-carousel">
+  <div class="xtx-carousel" @mouseenter="stop" @mouseleave="start">
     <ul class="carousel-body">
 
       <!-- 图片 -->
