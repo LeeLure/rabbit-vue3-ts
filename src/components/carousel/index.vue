@@ -18,8 +18,9 @@
 import { BannerItem } from '@/types/data';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-// 默认值赋值属于实验性语法, 可以尝鲜, 需要配置 reactivityTransform 属性
-const { slides, duration = 3000, autoplay = true } = defineProps<{ slides: BannerItem[], duration?: number, autoplay?: Boolean }>()
+// 默认值赋值属于实验性语法, 可以尝鲜, 需要配置 reactivityTransform 属性  (也可使用 withDefault api)
+// vue 3.2.25 中要求加的属性, 必须在 @vitejs/plugin-vue 是 2.0.0 以上才可以,在 vite.config.ts 里配置
+const { slides, duration = 3000, autoplay = true } = defineProps<{ slides: BannerItem[], duration?: number, autoplay?: boolean }>()
 
 // 声明一个变量作为当前轮播图的索引
 const active = ref(0)
