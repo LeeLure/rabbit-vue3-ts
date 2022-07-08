@@ -42,3 +42,11 @@ export interface NewItem {
   discount?: number;
   orderNum: number;
 }
+
+// 人气推荐
+export interface HotItem {
+  id: string;
+  picture: string;
+  title: string;
+  alt: string;
+}

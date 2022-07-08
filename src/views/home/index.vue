@@ -8,6 +8,8 @@
         <HomeBanner />
         <!-- 新鲜好物 -->
         <HomeNew />
+        <!-- 人气推荐 -->
+        <HomeHot />
       </div>
     </div>
   </div>
@@ -17,6 +19,7 @@
 import HomeBanner from './components/home-banner.vue';
 import HomeCategory from './components/home-category.vue';
 import HomeNew from './components/home-new.vue';
+import HomeHot from './components/home-hot.vue';
 </script>
 
 <style>

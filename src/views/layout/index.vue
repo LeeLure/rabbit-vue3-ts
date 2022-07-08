@@ -12,7 +12,7 @@ import AppHeaderSticky from './components/app-header-sticky.vue';
     <AppHeader />
     <!-- 吸顶导航 -->
     <AppHeaderSticky />
-    <div class="app-body" style="height: 1200px;">
+    <div class="app-body" style="height: 3000px;">
       <!-- 二级路由出口 -->
       <RouterView />
     </div>

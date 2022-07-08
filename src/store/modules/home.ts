@@ -1,4 +1,4 @@
-import { ApiRes, BannerItem, NewItem } from './../../types/data.d';
+import { ApiRes, BannerItem, HotItem, NewItem } from './../../types/data.d';
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
 
@@ -7,8 +7,12 @@ import axios from '@/utils/request'
 export default defineStore('home', {
   state() {
     return {
+      // 轮播图
       bannerList: [] as BannerItem[],
-      newList: [] as NewItem[]
+      // 新鲜好物
+      newList: [] as NewItem[],
+      // 人气推荐
+      hotList: [] as HotItem[]
     }
   },
 
@@ -22,9 +26,16 @@ export default defineStore('home', {
 
     // 新鲜好物
     async getNewList() {
-      const result = await axios.get<ApiRes<NewItem>>('/home/new')
-      // console.log(result);
-      this.newList = result.data.result
+      const res = await axios.get<ApiRes<NewItem>>('/home/new')
+      // console.log(res);
+      this.newList = res.data.result
+    },
+
+    // 人气推荐
+    async getHotList() {
+      const res = await axios.get<ApiRes<HotItem>>('/home/hot')
+      // console.log(res);
+      this.hotList = res.data.result
     }
   }
 })
