@@ -8,7 +8,7 @@ home.getBannerList()
 <template>
   <div class="home-banner">
     <!-- 轮播图 -->
-    <XtxCarousel :slides="home.bannerList" />
+    <XtxCarousel :duration="2500" :slides="home.bannerList" />
   </div>
 </template>
 

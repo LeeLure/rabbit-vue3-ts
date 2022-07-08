@@ -4,13 +4,22 @@
 //   slides: {
 //     type: Array,
 //     required: true
+//   },
+//   autoplay: {
+//     type: Boolean,
+//     default: true
+//   },
+//   duration: {
+//     type: Number,
+//     default: 3000
 //   }
 // })
 
 import { BannerItem } from '@/types/data';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-const props = defineProps<{ slides: BannerItem[] }>()
+// 默认值赋值属于实验性语法, 可以尝鲜, 需要配置 reactivityTransform 属性
+const { slides, duration = 3000, autoplay = true } = defineProps<{ slides: BannerItem[], duration?: number, autoplay?: Boolean }>()
 
 // 声明一个变量作为当前轮播图的索引
 const active = ref(0)
@@ -20,7 +29,7 @@ const prev = () => {
   active.value--
 
   if (active.value < 0) {
-    active.value = props.slides.length - 1
+    active.value = slides.length - 1
   }
 }
 
@@ -28,7 +37,7 @@ const prev = () => {
 const next = () => {
   active.value++
 
-  if (active.value >= props.slides.length) {
+  if (active.value >= slides.length) {
     active.value = 0
   }
 }
@@ -49,11 +58,14 @@ const stop = () => {
 
 // 鼠标离开轮播图开始自动轮播
 const start = () => {
+  // 是否自动轮播:只要没有传入 autoplay 不论何时都不会自动播放
+  if (!autoplay) return
+
   // 开始自动轮播
   // 在 TS 里调用 setInterval 需要加上 window
   timerId = window.setInterval(() => {
     next()
-  }, 2500)
+  }, duration)
 }
 
 // 组件挂载时开启定时器
@@ -86,7 +98,8 @@ onUnmounted(() => {
 
     <!-- 小圆点 -->
     <div class="carousel-indicator">
-      <span v-for="(item, index) in slides" :key="item.id" :class="{ active: active === index }"></span>
+      <span v-for="(item, index) in slides" :key="item.id" :class="{ active: active === index }"
+        @mouseenter="active = index"></span>
     </div>
   </div>
 </template>
