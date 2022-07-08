@@ -8,6 +8,7 @@ home.getBannerList()
 <template>
   <div class="home-banner">
     <!-- 轮播图 -->
+    <XtxCarousel />
   </div>
 </template>
 
@@ -20,5 +21,14 @@ home.getBannerList()
   top: 0;
   z-index: 98;
   background-color: pink;
+
+  //  :deep(类名) less 深度选择器新语法，/deep/已被废弃
+  :deep(.carousel-btn.prev) {
+    left: 270px !important;
+  }
+
+  :deep(.carousel-indicator) {
+    padding-left: 250px;
+  }
 }
 </style>
