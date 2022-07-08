@@ -31,3 +31,14 @@ export interface BannerItem {
   hrefUrl: string;
   type: string;
 }
+
+// 新鲜好物
+export interface NewItem {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: number;
+  orderNum: number;
+}
