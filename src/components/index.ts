@@ -10,5 +10,7 @@ export default {
     app.component(XtxSkeleton.name, XtxSkeleton)
     app.component(XtxCarousel.name, XtxCarousel)
     app.component(XtxMore.name, XtxMore)
+
+    // 全局注册组件
   }
 }
