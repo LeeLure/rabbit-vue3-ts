@@ -23,3 +23,11 @@ export interface GoodsItem {
   discount?: number;
   orderNum?: number;
 }
+
+// 轮播图类型
+export interface BannerItem {
+  id: string;
+  imgUrl: string;
+  hrefUrl: string;
+  type: string;
+}
