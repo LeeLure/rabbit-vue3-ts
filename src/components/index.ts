@@ -4,14 +4,22 @@ import XtxCarousel from './carousel/index.vue'
 import XtxMore from './more/index.vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import defaultImage from '@/assets/images/200.png'
+import Bread from './Bread/index.vue'
+import BreadItem from './Bread/Item.vue'
 
 
 export default {
   install(app: App) {
     // 全局注册组件
+    // 骨架屏
     app.component(XtxSkeleton.name, XtxSkeleton)
+    // 轮播图
     app.component(XtxCarousel.name, XtxCarousel)
+    // 查看更多
     app.component(XtxMore.name, XtxMore)
+    // 面包屑
+    app.component(Bread.name, Bread)
+    app.component(BreadItem.name, BreadItem)
 
     // 全局注册组件
     // 参数1: 指令名
