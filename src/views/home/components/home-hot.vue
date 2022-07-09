@@ -35,19 +35,23 @@ const target = useLazyData(home.getHotList)
 </script>
 <template>
   <HomePanel ref="target" title="人气推荐" sub-title="人气爆款 不容错过">
-    <ul ref="pannel" class="goods-list">
-      <li v-if="home.hotList.length" v-for="item in home.hotList" :key="item.id">
-        <RouterLink to="/">
-          <!-- 自定义指令：图片懒加载 -->
-          <img v-slowimage="item.picture" alt="" />
-          <p class="name">{{ item.title }}</p>
-          <p class="desc">{{ item.alt }}</p>
-        </RouterLink>
-      </li>
+    <!-- 淡出的动画 -->
+    <!-- 只要先定好类，使用动画时在外层包裹一层 transition 即可 -->
+    <transition name="fade">
+      <ul ref="pannel" class="goods-list">
+        <li v-if="home.hotList.length" v-for="item in home.hotList" :key="item.id">
+          <RouterLink to="/">
+            <!-- 自定义指令：图片懒加载 -->
+            <img v-slowimage="item.picture" alt="" />
+            <p class="name">{{ item.title }}</p>
+            <p class="desc">{{ item.alt }}</p>
+          </RouterLink>
+        </li>
 
-      <!-- 骨架屏 -->
-      <HomeSkeleton :count="4" v-else />
-    </ul>
+        <!-- 骨架屏 -->
+        <HomeSkeleton :count="4" v-else />
+      </ul>
+    </transition>
   </HomePanel>
 </template>
 
