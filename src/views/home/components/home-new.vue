@@ -1,13 +1,30 @@
 <script lang="ts" setup>
 import HomePanel from './home-panel.vue'
 import useStore from '@/store';
+import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue';
 
 const { home } = useStore()
 
-home.getNewList()
+// home.getNewList()
+
+// 目标：实现数据懒加载
+// 分析：打开首页，所有数据会加载，因为 setup 会自动执行
+// 思路：不要直接在 setup 中直接调用 getNewList ,进入可视区后在调用
+const target = ref(null)
+
+const { stop } = useIntersectionObserver(target, ([{ isIntersecting }]) => {
+
+  if (isIntersecting) {
+    home.getNewList()
+
+    // 只调用一次
+    stop()
+  }
+})
 </script>
 <template>
-  <div class="home-new">
+  <div class="home-new" ref="target">
     <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
       <template #right>
         <XtxMore path="/" />
