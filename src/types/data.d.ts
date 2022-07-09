@@ -11,7 +11,7 @@ export interface CategoryItem {
 export interface ApiRes<T> {
   code: string
   msg: string
-  result: T[]
+  result: T
 }
 
 export interface GoodsItem {

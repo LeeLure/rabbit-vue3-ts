@@ -25,28 +25,28 @@ export default defineStore('home', {
   actions: {
     // 轮播图
     async getBannerList() {
-      const res = await axios.get<ApiRes<BannerItem>>('/home/banner')
+      const res = await axios.get<ApiRes<BannerItem[]>>('/home/banner')
       // console.log(res);
       this.bannerList = res.data.result
     },
 
     // 新鲜好物
     async getNewList() {
-      const res = await axios.get<ApiRes<NewItem>>('/home/new')
+      const res = await axios.get<ApiRes<NewItem[]>>('/home/new')
       // console.log(res);
       this.newList = res.data.result
     },
 
     // 人气推荐
     async getHotList() {
-      const res = await axios.get<ApiRes<HotItem>>('/home/hot')
+      const res = await axios.get<ApiRes<HotItem[]>>('/home/hot')
       // console.log(res);
       this.hotList = res.data.result
     },
 
     // 热门品牌
     async getBrandList() {
-      const res = await axios.get<ApiRes<BrandItem>>('/home/brand')
+      const res = await axios.get<ApiRes<BrandItem[]>>('/home/brand')
       // console.log(res);
       this.brandList = res.data.result
       // 测试
@@ -57,14 +57,14 @@ export default defineStore('home', {
 
     // 产品区块
     async getProductList() {
-      const res = await axios.get<ApiRes<ProductRes>>('/home/goods')
+      const res = await axios.get<ApiRes<ProductRes[]>>('/home/goods')
       // console.log(res);
       this.productList = res.data.result
     },
 
     // 最新专题
     async getSpecialList() {
-      const res = await axios.get<ApiRes<Special>>('/home/special')
+      const res = await axios.get<ApiRes<Special[]>>('/home/special')
       // console.log(res);
       this.specialList = res.data.result
     }

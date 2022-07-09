@@ -17,7 +17,7 @@ export default defineStore('category', {
 
   actions: {
     async getAllCategory() {
-      const res = await axios.get<ApiRes<CategoryItem>>('/home/category/head')
+      const res = await axios.get<ApiRes<CategoryItem[]>>('/home/category/head')
       // console.log(res);
 
       this.list = res.data.result
@@ -53,7 +53,7 @@ export default defineStore('category', {
 
     // 顶级分类
     async getTopCategoryList(id: string) {
-      const res = await axios.get('/category', { params: { id } })
+      const res = await axios.get<ApiRes<TopCategory>>('/category', { params: { id } })
       // console.log(res);
       this.topCategoryList = res.data.result
     }
