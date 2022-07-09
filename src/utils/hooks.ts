@@ -16,6 +16,10 @@ export function useLazyData(callback: () => void) {
       // 只调用一次
       stop()
     }
+  }, {
+    // 产品区域需要滚动比较多才能去加载数据
+    // 阈值: 容器和可视区交叉的占比（进入的面积/容器完整面积） 取值
+    threshold: 0
   })
 
   return target
