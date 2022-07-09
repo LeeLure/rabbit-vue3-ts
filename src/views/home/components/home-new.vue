@@ -43,8 +43,8 @@ const target = useLazyData(home.getNewList)
       <!-- 面板内容 -->
       <!-- 淡出的动画 -->
       <transition name="fade">
-        <ul class="goods-list">
-          <li v-if="home.hotList.length" v-for="item in home.newList" :key="item.id">
+        <ul class="goods-list" v-if="home.hotList.length">
+          <li v-for="item in home.newList" :key="item.id">
             <RouterLink to="/">
               <!-- 自定义指令：图片懒加载 -->
               <img v-slowimage="item.picture" alt="" />
@@ -52,10 +52,10 @@ const target = useLazyData(home.getNewList)
               <p class="price">&yen;{{ item.price }}</p>
             </RouterLink>
           </li>
-
-          <!-- 骨架屏 -->
-          <HomeSkeleton :count="4" v-else />
         </ul>
+
+        <!-- 骨架屏 -->
+        <HomeSkeleton :count="4" v-else />
       </transition>
     </HomePanel>
   </div>
