@@ -1,5 +1,6 @@
 <script lang="ts" name="TopCategory" setup>
 import useStore from '@/store';
+import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const { category } = useStore()
@@ -8,7 +9,14 @@ const { category } = useStore()
 const route = useRoute()
 // console.log(route.params.id);
 
-category.getTopCategoryList(route.params.id as string)
+watch(() => route.params.id, () => {
+  // 严谨的处理方法
+  if (route.fullPath === `/category/${route.params.id}`) {
+
+    category.getTopCategoryList(route.params.id as string)
+  }
+}, { immediate: true })
+
 </script>
 <template>
   <div class="category">分类组件
