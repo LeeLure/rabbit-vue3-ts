@@ -3,6 +3,7 @@ import XtxSkeleton from './skeleton/index.vue'
 import XtxCarousel from './carousel/index.vue'
 import XtxMore from './more/index.vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import defaultImage from '@/assets/images/200.png'
 
 
 export default {
@@ -28,6 +29,13 @@ export default {
             el.src = binding.value
           }
         })
+
+        // 对图片进行错误处理
+        // onerror 事件：图片加载失败时触发
+        el.onerror = () => {
+          // image 的 src 只有两种：base64的字符串 url
+          el.src = defaultImage
+        }
       }
     })
   }
