@@ -4,6 +4,7 @@ import { useLazyData } from '@/utils/hooks';
 // import { useIntersectionObserver } from '@vueuse/core';
 // import { ref } from 'vue';
 import HomePanel from './home-panel.vue'
+import HomeSkeleton from './home-skeleton.vue';
 
 const { home } = useStore()
 
@@ -35,7 +36,7 @@ const target = useLazyData(home.getHotList)
 <template>
   <HomePanel ref="target" title="人气推荐" sub-title="人气爆款 不容错过">
     <ul ref="pannel" class="goods-list">
-      <li v-for="item in home.hotList" :key="item.id">
+      <li v-if="home.hotList.length" v-for="item in home.hotList" :key="item.id">
         <RouterLink to="/">
           <!-- 自定义指令：图片懒加载 -->
           <img v-slowimage="item.picture" alt="" />
@@ -43,6 +44,9 @@ const target = useLazyData(home.getHotList)
           <p class="desc">{{ item.alt }}</p>
         </RouterLink>
       </li>
+
+      <!-- 骨架屏 -->
+      <HomeSkeleton :count="4" v-else />
     </ul>
   </HomePanel>
 </template>
