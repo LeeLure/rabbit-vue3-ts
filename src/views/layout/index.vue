@@ -21,7 +21,7 @@ category.getAllCategory()
     <AppHeader />
     <!-- 吸顶导航 -->
     <AppHeaderSticky />
-    <div class="app-body" style="height: 3000px;">
+    <div class="app-body">
       <!-- 二级路由出口 -->
       <RouterView />
     </div>
