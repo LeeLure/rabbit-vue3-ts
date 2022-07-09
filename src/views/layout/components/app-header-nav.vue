@@ -29,7 +29,8 @@ import useStore from '@/store'
 const { category } = useStore()
 
 // 获取头部分类
-category.getAllCategory()
+// bug 解决：getAllCategory 重复调用，故在 layout/index.vue 调用
+// category.getAllCategory()
 </script>
 
 <style scoped lang="less">
