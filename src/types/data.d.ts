@@ -107,3 +107,11 @@ interface Special {
   viewNum: number;
   replyNum: number;
 }
+
+// 顶级分类
+interface TopCategory {
+  id: string;
+  name: string;
+  picture?: any;
+  children: TopCategoryItem[];
+}
