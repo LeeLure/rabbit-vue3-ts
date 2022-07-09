@@ -1,4 +1,4 @@
-import { ApiRes, BannerItem, BrandItem, HotItem, NewItem, ProductRes } from './../../types/data.d';
+import { ApiRes, BannerItem, BrandItem, HotItem, NewItem, ProductRes, Special } from './../../types/data.d';
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
 
@@ -16,7 +16,9 @@ export default defineStore('home', {
       // 热门品牌
       brandList: [] as BrandItem[],
       // 好物：居家、美食、服饰、母婴
-      productList: [] as ProductRes[]
+      productList: [] as ProductRes[],
+      // 最新专题
+      specialList: [] as Special[]
     }
   },
 
@@ -58,6 +60,13 @@ export default defineStore('home', {
       const res = await axios.get<ApiRes<ProductRes>>('/home/goods')
       // console.log(res);
       this.productList = res.data.result
+    },
+
+    // 最新专题
+    async getSpecialList() {
+      const res = await axios.get<ApiRes<Special>>('/home/special')
+      // console.log(res);
+      this.specialList = res.data.result
     }
   }
 })
