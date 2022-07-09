@@ -45,6 +45,10 @@ export default defineStore('home', {
       const res = await axios.get<ApiRes<BrandItem>>('/home/brand')
       // console.log(res);
       this.brandList = res.data.result
+      // 测试
+      // this.brandList = [...res.data.result, ...res.data.result]
+      // this.brandList.pop()
+      // this.brandList.pop()
     }
   }
 })
