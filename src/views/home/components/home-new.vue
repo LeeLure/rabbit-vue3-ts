@@ -42,6 +42,7 @@ const target = useLazyData(home.getNewList)
       </template>
       <!-- 面板内容 -->
       <!-- 淡出的动画 -->
+      <!-- 只要提前定义好类样式, 在需要动画的组件外面包一层 transition 组件即可 -->
       <transition name="fade">
         <ul class="goods-list" v-if="home.hotList.length">
           <li v-for="item in home.newList" :key="item.id">

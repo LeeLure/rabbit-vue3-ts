@@ -83,6 +83,7 @@ const target = useLazyData(home.getProductList)
       img {
         width: 100%;
         height: 100%;
+        // 类似于 background-size, 专门用于 img 标签
         object-fit: cover;
       }
 
