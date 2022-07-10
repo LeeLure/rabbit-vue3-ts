@@ -23,14 +23,96 @@ useIntersectionObserver(target, ([{ isIntersecting }]) => {
   }
 })
 
+
+const flag = ref(true)
 </script>
 
 <template>
-  <div style="height: 2000px;">
+  <!-- <div style="height: 2000px;">
     私人领地
-  </div>
+  </div> -->
   <img ref="target" alt="">
+
+  <button @click="flag = !flag">切换显示</button><br>
+
+  <transition>
+    <img v-if="flag" src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" alt="">
+  </transition>
+  <transition name="test">
+    <img v-if="flag" ref="target" alt="">
+  </transition>
 </template>
 
-<style scoped>
+<style scoped lang="less">
+// .v-leave- {
+//   &from {
+
+//   }
+//   &active {
+
+//   }
+//   &to {
+
+//   }
+// }
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(0.2);
+  }
+
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+.v-leave-active {
+  // 过渡动画的效果
+  // transition: all 1s;
+  animation: bounce 3s;
+}
+
+.v-enter-active {
+  // 过渡动画的效果
+  // transition: all 1s;
+  animation: bounce 3s reverse;
+}
+
+.test-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.test-leave-active {
+  // 过渡动画的效果
+  transition: all 1s;
+}
+
+.test-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.test-enter-from {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.test-enter-active {
+  // 过渡动画的效果
+  transition: all 1s;
+}
+
+.test-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>
