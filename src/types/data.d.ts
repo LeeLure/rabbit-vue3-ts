@@ -115,3 +115,55 @@ interface TopCategory {
   picture?: any;
   children: TopCategoryItem[];
 }
+
+// 二级分类
+export interface SubCategory {
+  id: string;
+  name: string;
+  picture?: any;
+  parentId: string;
+  parentName: string;
+  goods: Good[];
+  categories: Category[];
+  brands: Brand[];
+  saleProperties: SaleProperty[];
+}
+
+export interface SaleProperty {
+  id: string;
+  name: string;
+  properties: Property[];
+}
+
+export interface Property {
+  id: string;
+  name: string;
+}
+
+export interface Brand {
+  id: string;
+  name: string;
+  nameEn: string;
+  logo: string;
+  picture: string;
+  type?: any;
+  desc: string;
+  place: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  layer: number;
+  parent?: any;
+}
+
+interface Good {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: any;
+  orderNum: number;
+}

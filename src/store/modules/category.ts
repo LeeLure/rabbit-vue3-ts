@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
-import { ApiRes, CategoryItem, TopCategory } from '@/types/data'
+import { ApiRes, CategoryItem, SubCategory, TopCategory } from '@/types/data'
 import { topCategory } from './constants'
 
 // perf: 给一级分类导航名字套个壳子，解决网速慢时分类显示不及时
@@ -11,7 +11,10 @@ export default defineStore('category', {
   state() {
     return {
       list: defaultList as CategoryItem[],
-      topCategoryList: {} as TopCategory
+      // 顶级分类
+      topCategoryList: {} as TopCategory,
+      // 二级分类
+      subCategoryList: {} as SubCategory
     }
   },
 
@@ -56,6 +59,13 @@ export default defineStore('category', {
       const res = await axios.get<ApiRes<TopCategory>>('/category', { params: { id } })
       // console.log(res);
       this.topCategoryList = res.data.result
+    },
+
+    // 二级分类
+    async getSubCategoryList(id: string) {
+      const res = await axios.get<ApiRes<SubCategory>>('/category/sub/filter', { params: { id } })
+      // console.log(res);
+      this.subCategoryList = res.data.result
     }
   }
 })

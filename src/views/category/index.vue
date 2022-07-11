@@ -23,10 +23,10 @@ const route = useRoute()
 // 只要监视的对象源改变，就会自动执行
 watchEffect(() => {
   // console.log(route.params.id);
-  if (!route.params.id) return
-  // if (route.fullPath === `/category/${route.params.id}`) {
-  category.getTopCategoryList(route.params.id as string)
-  // }
+  // if (!route.params.id) return
+  if (route.fullPath === `/category/${route.params.id}`) {
+    category.getTopCategoryList(route.params.id as string)
+  }
 })
 
 // 应该获取分类下的轮播图数据，但是后台没有提供接口
