@@ -23,9 +23,12 @@ const { subCategoryList } = storeToRefs(category)
       <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
-        <XtxBreadItem :to="`/category/${subCategoryList.parentId}`">{{ subCategoryList.parentName }}
+        <!-- 优化：如果没有就不要渲染了 -->
+        <XtxBreadItem v-if="subCategoryList.parentName" :to="`/category/${subCategoryList.parentId}`">{{
+            subCategoryList.parentName
+        }}
         </XtxBreadItem>
-        <XtxBreadItem>{{ subCategoryList.name }}</XtxBreadItem>
+        <XtxBreadItem v-if="subCategoryList.name">{{ subCategoryList.name }}</XtxBreadItem>
       </XtxBread>
     </div>
   </div>
