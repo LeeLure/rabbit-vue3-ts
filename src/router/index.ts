@@ -31,6 +31,10 @@ const router = createRouter({
           component: () => import('@/views/category/sub.vue')
         },
         {
+          path: 'goods/:id',
+          component: () => import('@/views/goods/index.vue')
+        },
+        {
           path: 'palyground',
           component: () => import('@/views/palyground/index.vue')
         }
