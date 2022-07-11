@@ -3,7 +3,7 @@
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li @mouseenter="category.show(item.id)" @mouseleave="category.hide(item.id)" @click="category.hide(item.id)"
+    <li @mousemove="category.show(item.id)" @mouseleave="category.hide(item.id)" @click="category.hide(item.id)"
       v-for="item in category.list" :key="item.id">
       <!-- bug：    数据还未请求回来、点击一级分类时地址栏出现 undefined -->
       <!-- bug解决: 如果没有数据，跳转首页 -->
