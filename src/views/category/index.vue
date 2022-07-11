@@ -1,6 +1,6 @@
 <script lang="ts" name="TopCategory" setup>
 import useStore from '@/store';
-import { watch } from 'vue';
+import { watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
 const { category } = useStore()
@@ -10,13 +10,23 @@ const route = useRoute()
 // console.log(route.params.id);
 
 // 监视对象的某个属性时需要用箭头函数的方式
-watch(() => route.params.id, () => {
-  // 严谨的处理方法
-  if (route.fullPath === `/category/${route.params.id}`) {
+// watch(() => route.params.id, () => {
+// if(!route.params.id) return
+//   // 严谨的处理方法
+//   if (route.fullPath === `/category/${route.params.id}`) {
 
-    category.getTopCategoryList(route.params.id as string)
-  }
-}, { immediate: true })
+//     category.getTopCategoryList(route.params.id as string)
+//   }
+// }, { immediate: true })
+
+// 只要监视的对象源改变，就会自动执行
+watchEffect(() => {
+  // console.log(route.params.id);
+  if (!route.params.id) return
+  // if (route.fullPath === `/category/${route.params.id}`) {
+  category.getTopCategoryList(route.params.id as string)
+  // }
+})
 
 </script>
 <template>
