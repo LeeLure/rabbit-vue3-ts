@@ -66,6 +66,11 @@ export default defineStore('category', {
       const res = await axios.get<ApiRes<SubCategory>>('/category/sub/filter', { params: { id } })
       // console.log(res);
       this.subCategoryList = res.data.result
+    },
+
+    // 为优化用户体验清空 subCategoryList 
+    resetSubCategoryList() {
+      this.subCategoryList = {} as SubCategory
     }
   }
 })
