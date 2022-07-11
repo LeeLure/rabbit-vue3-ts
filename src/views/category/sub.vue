@@ -25,29 +25,31 @@ const { subCategoryList } = storeToRefs(category)
 <template>
   <div class="category">
     <div class="container">
-      <Transition name="fade-in-out">
-        <!-- 面包屑 -->
-        <XtxBread v-if="subCategoryList.parentName">
-          <XtxBreadItem to="/">首页</XtxBreadItem>
-          <XtxBreadItem :to="`/category/${subCategoryList.parentId}`">{{ subCategoryList.parentName }}
-          </XtxBreadItem>
-          <XtxBreadItem>{{ subCategoryList.name }}</XtxBreadItem>
-        </XtxBread>
+      <div style="height: 70px;">
+        <Transition name="fade-in-out">
+          <!-- 面包屑 -->
+          <XtxBread v-if="subCategoryList.parentName">
+            <XtxBreadItem to="/">首页</XtxBreadItem>
+            <XtxBreadItem :to="`/category/${subCategoryList.parentId}`">{{ subCategoryList.parentName }}
+            </XtxBreadItem>
+            <XtxBreadItem>{{ subCategoryList.name }}</XtxBreadItem>
+          </XtxBread>
 
-        <!-- 优化：如果没有就不要渲染了 -->
-        <!-- 面包屑的骨架屏 -->
-        <XtxBread v-else>
-          <XtxBreadItem to="/">首页</XtxBreadItem>
-          <XtxBreadItem>
-            <!-- 骨架屏 -->
-            <XtxSkeleton opacity=".2" animated :width="28" :height="18" bg="#27bb9a" />
-          </XtxBreadItem>
-          <XtxBreadItem>
-            <!-- 骨架屏 -->
-            <XtxSkeleton opacity=".2" animated :width="76" :height="18" bg="#27bb9a" />
-          </XtxBreadItem>
-        </XtxBread>
-      </Transition>
+          <!-- 优化：如果没有就不要渲染了 -->
+          <!-- 面包屑的骨架屏 -->
+          <XtxBread v-else>
+            <XtxBreadItem to="/">首页</XtxBreadItem>
+            <XtxBreadItem>
+              <!-- 骨架屏 -->
+              <XtxSkeleton opacity=".2" animated :width="28" :height="18" bg="#27bb9a" />
+            </XtxBreadItem>
+            <XtxBreadItem>
+              <!-- 骨架屏 -->
+              <XtxSkeleton opacity=".2" animated :width="76" :height="18" bg="#27bb9a" />
+            </XtxBreadItem>
+          </XtxBread>
+        </Transition>
+      </div>
 
       <!-- 筛选区 -->
       <div class="sub-filter">
