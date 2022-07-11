@@ -1,17 +1,40 @@
 <script lang="ts" setup name="GoodsImage">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useMouseInElement } from '@vueuse/core'
 
 defineProps<{ images: string[] }>()
 
 // 默认高亮的下标
 const active = ref(0)
+const target = ref(null)
+
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+
+// 通过计算属性可以做边界的处理
+const position = computed(() => {
+  let x = elementX.value - 100
+  let y = elementY.value - 100
+
+  // 限制 x 和 y 的边界
+  if (x < 0) x = 0
+  if (y < 0) y = 0
+  if (x > 200) x = 200
+  if (y > 200) y = 200
+
+  return {
+    x,
+    y
+  }
+})
 </script>
 <template>
   <div class="goods-image">
-    <div class="middle">
+    <div ref="target" class="middle">
       <img :src="images[active]" alt="" />
-      <div class="large" :style="[{ backgroundImage: `url(${images[active]})` }]"></div>
-      <div class="layer"></div>
+      <div v-if="!isOutside" class="large"
+        :style="{ backgroundImage: `url(${images[active]})`, backgroundPosition: `${-position.x * 2}px ${-position.y * 2}px` }">
+      </div>
+      <div v-if="!isOutside" :style="{ left: position.x + 'px', top: position.y + 'px' }" class="layer"></div>
     </div>
     <ul class="small">
       <li @mouseenter="active = index" v-for="(item, index) in images" :key="item"
