@@ -63,7 +63,8 @@ home.getBannerList()
       </div>
 
       <!-- 分类关联商品 -->
-      <div class="ref-goods" v-for="item in category.topCategoryList.children" :key="item.id">
+      <div v-if="category.topCategoryList.children" class="ref-goods" v-for="item in category.topCategoryList.children"
+        :key="item.id">
         <div class="head">
           <h3>- {{ item.name }} -</h3>
           <p class="tag">温暖柔软，品质之选</p>
@@ -71,6 +72,20 @@ home.getBannerList()
         </div>
         <div class="body">
           <GoodsItem :goods="goods" v-for="goods in item.goods" :key="goods.id" />
+        </div>
+      </div>
+
+      <!-- 骨架屏 -->
+      <div v-else class="ref-goods" v-for="i in 5" :key="i">
+        <div class="head">
+          <h3>
+            <XtxSkeleton :height="30" :width="300" animated />
+          </h3>
+          <p class="tag"></p>
+          <XtxSkeleton style="position: absolute; right: 20px; top: 40px;" :height="21" :width="70" animated />
+        </div>
+        <div class="body" style="display: flex; justify-content: space-between;">
+          <XtxSkeleton :height="300" :width="200" animated v-for="item in 5" :key="item" />
         </div>
       </div>
 
