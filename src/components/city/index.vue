@@ -1,7 +1,29 @@
 <script lang="ts" setup name="XtxCity">
 import { ref } from 'vue';
+import $http from 'axios'
 
 const active = ref(false)
+
+// 城市列表类型
+type cityList = {
+  code: string
+  level: number
+  name: string
+  areaList: cityList[]
+}
+
+const cityList = ref<cityList[]>([])
+
+// 获取城市列表
+const getCityList = (async () => {
+  const res = await $http.get<cityList[]>('https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/area.json')
+
+  // console.log(res);
+
+  cityList.value = res.data
+})
+
+getCityList()
 </script>
 <template>
   <div class="xtx-city">
@@ -11,7 +33,7 @@ const active = ref(false)
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div v-show="active" class="option">
-      <span class="ellipsis" v-for="i in 24" :key="i">北京市</span>
+      <span class="ellipsis" v-for="item in cityList" :key="item.name">{{ item.name }}</span>
     </div>
   </div>
 </template>
