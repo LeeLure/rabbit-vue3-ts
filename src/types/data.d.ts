@@ -193,4 +193,15 @@ export type GoodsInfo = {
     id: string
     name: string
   }[]
+  specs: SpecItem[]
+}
+
+// 商品的规格类型
+export type SpecItem = {
+  name: string
+  values: {
+    desc: string
+    name: string
+    picture: string
+  }[]
 }
