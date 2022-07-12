@@ -12,6 +12,7 @@ declare module 'vue' {
     XtxMore: typeof XtxMore
     XtxBread: typeof XtxBread
     XtxBreadItem: typeof XtxBreadItem
+    XtxCity: typeof XtxCity
   }
 }
 export { }

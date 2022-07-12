@@ -6,6 +6,7 @@ import { useIntersectionObserver } from '@vueuse/core'
 import defaultImage from '@/assets/images/200.png'
 import Bread from './Bread/index.vue'
 import BreadItem from './Bread/Item.vue'
+import City from './city/index.vue'
 
 
 export default {
@@ -20,6 +21,9 @@ export default {
     // 面包屑
     app.component(Bread.name, Bread)
     app.component(BreadItem.name, BreadItem)
+    // 城市
+    app.component(City.name, City)
+
 
     // 全局注册组件
     // 参数1: 指令名

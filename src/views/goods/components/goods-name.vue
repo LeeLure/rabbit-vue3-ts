@@ -17,7 +17,10 @@ defineProps<{ goods: GoodsInfo }>()
     </dl>
     <dl>
       <dt>配送</dt>
-      <dd>至</dd>
+      <!-- 省市县联动 -->
+      <dd>至
+        <XtxCity />
+      </dd>
     </dl>
     <dl>
       <dt>服务</dt>
