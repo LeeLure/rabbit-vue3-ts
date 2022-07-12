@@ -10,9 +10,15 @@ const { goods } = useStore()
 
 const route = useRoute()
 
+// 组件缓存：因为路由的 id 变化了，组件并没有改变
+// watchEffect 用于解决组件缓存的问题
 watchEffect(() => {
   if (route.fullPath !== '/goods/' + route.params.id) return
 
+  // 先清空组件缓存
+  goods.resetGoodsInfo()
+
+  // 再请求数据
   goods.getGoodsInfo(route.params.id as string)
 })
 

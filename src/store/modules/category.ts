@@ -61,6 +61,11 @@ export default defineStore('category', {
       this.topCategoryList = res.data.result
     },
 
+    // 为优化用户体验清空 topCategoryList 
+    resetTopCategoryList() {
+      this.topCategoryList = {} as TopCategory
+    },
+
     // 二级分类
     async getSubCategoryList(id: string) {
       const res = await axios.get<ApiRes<SubCategory>>('/category/sub/filter', { params: { id } })

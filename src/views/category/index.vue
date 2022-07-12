@@ -25,6 +25,10 @@ watchEffect(() => {
   // console.log(route.params.id);
   // if (!route.params.id) return
   if (route.fullPath === `/category/${route.params.id}`) {
+
+    // 先清空，再发请求
+    category.resetTopCategoryList()
+
     category.getTopCategoryList(route.params.id as string)
   }
 })
