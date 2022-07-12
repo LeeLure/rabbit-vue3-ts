@@ -3,6 +3,8 @@ import useStore from '@/store';
 import { watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import GoodsImage from './components/goods-image.vue';
+import GoodsSales from './components/goods-sales.vue';
+import GoodsName from './components/goods-name.vue';
 
 const { goods } = useStore()
 
@@ -50,8 +52,12 @@ watchEffect(() => {
       <div class="goods-info">
         <div class="media">
           <GoodsImage v-if="goods.info.mainPictures" :images="goods.info.mainPictures" />
+
+          <GoodsSales />
         </div>
-        <div class="spec"></div>
+        <div class="spec">
+          <GoodsName :goods="goods.info" />
+        </div>
       </div>
 
       <!-- 商品详情 -->
