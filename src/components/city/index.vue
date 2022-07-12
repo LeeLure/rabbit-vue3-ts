@@ -3,21 +3,38 @@ import { ref, watchEffect } from 'vue';
 import $http from 'axios'
 import { onClickOutside } from '@vueuse/core'
 
-const active = ref(false)
 
 // 城市列表类型
-type cityList = {
+export type cityList = {
   code: string
   level: number
   name: string
   areaList: cityList[]
 }
 
+// 选择的城市结果类型
+export type CityResult = {
+  provinceCode: string
+  provinceName: string
+  cityCode: string
+  cityName: string
+  countyCode: string
+  countyName: string
+}
+
+defineProps<{ address?: string }>()
+const emit = defineEmits<{ (e: 'changeCity', city: CityResult): void }>()
+
+const active = ref(false)
+
 const cityList = ref<cityList[]>([])
 // 再存一份
 const cacheList = ref<cityList[]>([])
 
 const target = ref(null)
+
+// 选择的城市
+const cityResult = ref<CityResult>({} as CityResult)
 
 // 获取城市列表
 const getCityList = (async () => {
@@ -38,8 +55,33 @@ onClickOutside(target, () => {
 
 // 选择省份
 const selectCity = (city: cityList) => {
+  // console.log('选择城市:', city.name)
+  // 选择城市时判断当前选择的是省还是市还是区
+  if (city.level === 0) {
+    // 选择的是省
+    cityResult.value.provinceName = city.name
+    cityResult.value.provinceCode = city.code
+  }
+
+  if (city.level === 1) {
+    // 选择的是市
+    cityResult.value.cityName = city.name
+    cityResult.value.cityCode = city.code
+  }
+
+  if (city.level === 2) {
+    // 选择的是区
+    cityResult.value.countyName = city.name
+    cityResult.value.countyCode = city.code
+
+    // 通知父组件, 数据携带过去
+    emit('changeCity', cityResult.value)
+  }
+
+  // 选完区就关闭窗口
   if (!city.areaList) return active.value = false
 
+  // 重置数据为省份
   cityList.value = city.areaList
 }
 
@@ -52,7 +94,8 @@ watchEffect(() => {
 <template>
   <div ref="target" class="xtx-city">
     <div @click="active = !active" :class="{ active }" class="select">
-      <span class="placeholder">请选择配送地址</span>
+      <span v-if="address" class="placeholder">{{ address }}</span>
+      <span v-else class="placeholder">请选择配送地址</span>
       <span class="value"></span>
       <i class="iconfont icon-angle-down"></i>
     </div>
