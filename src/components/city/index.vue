@@ -1,14 +1,16 @@
 <script lang="ts" setup name="XtxCity">
-// 我是注释
+import { ref } from 'vue';
+
+const active = ref(false)
 </script>
 <template>
   <div class="xtx-city">
-    <div class="select">
+    <div @click="active = !active" :class="{ active }" class="select">
       <span class="placeholder">请选择配送地址</span>
       <span class="value"></span>
       <i class="iconfont icon-angle-down"></i>
     </div>
-    <div class="option">
+    <div v-show="active" class="option">
       <span class="ellipsis" v-for="i in 24" :key="i">北京市</span>
     </div>
   </div>
