@@ -1,6 +1,7 @@
 <script lang="ts" setup name="XtxCity">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import $http from 'axios'
+import { onClickOutside } from '@vueuse/core'
 
 const active = ref(false)
 
@@ -13,6 +14,10 @@ type cityList = {
 }
 
 const cityList = ref<cityList[]>([])
+// 再存一份
+const cacheList = ref<cityList[]>([])
+
+const target = ref(null)
 
 // 获取城市列表
 const getCityList = (async () => {
@@ -21,19 +26,38 @@ const getCityList = (async () => {
   // console.log(res);
 
   cityList.value = res.data
+  cacheList.value = res.data
 })
 
 getCityList()
+
+// 当目标元素 target 外面被点击时触发事件
+onClickOutside(target, () => {
+  active.value = false
+})
+
+// 选择省份
+const selectCity = (city: cityList) => {
+  if (!city.areaList) return active.value = false
+
+  cityList.value = city.areaList
+}
+
+// 监听 active
+watchEffect(() => {
+  // 当关闭active的时候， 还原省份的数据
+  if (!active.value) cityList.value = cacheList.value
+})
 </script>
 <template>
-  <div class="xtx-city">
+  <div ref="target" class="xtx-city">
     <div @click="active = !active" :class="{ active }" class="select">
       <span class="placeholder">请选择配送地址</span>
       <span class="value"></span>
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div v-show="active" class="option">
-      <span class="ellipsis" v-for="item in cityList" :key="item.name">{{ item.name }}</span>
+      <span @click="selectCity(item)" class="ellipsis" v-for="item in cityList" :key="item.name">{{ item.name }}</span>
     </div>
   </div>
 </template>
