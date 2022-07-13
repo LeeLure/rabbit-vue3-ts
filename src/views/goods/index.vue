@@ -62,7 +62,7 @@ watchEffect(() => {
 
           <GoodsSales />
         </div>
-        <div class="spec">
+        <div class="spec" v-if="goods.info.skus">
           <GoodsName :goods="goods.info" />
 
           <!-- 商品规格 sku -->

@@ -194,6 +194,7 @@ export type GoodsInfo = {
     name: string
   }[]
   specs: SpecItem[]
+  skus: SkuItem[]
 }
 
 // 商品的规格类型
@@ -203,9 +204,22 @@ export type SpecItem = {
 }
 
 // 商品的规格的值的类型
-export type valueItem = {
+export type ValueItem = {
   desc: string
   name: string
   picture: string
   selected: boolean
+}
+
+// sku 类型
+export type SkuItem = {
+  id: string
+  inventory: number
+  oldPrice: string
+  price: string
+  skuCode: string
+  specs: {
+    name: string
+    valueName: string
+  }[]
 }
