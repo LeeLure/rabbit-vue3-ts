@@ -1,23 +1,20 @@
 <script setup lang="ts" name="GoodsSku">
-import goods from '@/store/modules/goods';
 import { GoodsInfo, SpecItem, ValueItem } from '@/types/data';
 import bwPowerSet from '@/utils/bwPowerSet'
 
-const props = defineProps<{ goods: GoodsInfo }>()
-// console.log(props)
-// console.log(props.goods.skus)
+const props = defineProps<{
+  goods: GoodsInfo
+}>()
 
+const SEPARATOR = '☆'
 
-// 高亮事件
-// sub：当前点击的条目  item：当前点击的条目所属的规格
+// sub 是当前点击的条目
+// item 是当前点击的条目所属的规格
 const changeSelected = (sub: ValueItem, item: SpecItem) => {
-  // 排他思想
-  // item.values.forEach(i => i.selected = false)
   // 判断如果被禁用了就不要选中
   if (sub.disabled) return
   // 干掉除了我之外的所有人
   item.values.filter(v => v.name !== sub.name).forEach(i => i.selected = false)
-
   // 修改当前被点击的对象属性 selected 取反
   // selected 默认是 undefined 而 undefined 取反正好是 true
   sub.selected = !sub.selected
@@ -28,13 +25,16 @@ const changeSelected = (sub: ValueItem, item: SpecItem) => {
   updateDisabledStatus()
 }
 
+// 测试 powerset 算法
+// const result = bwPowerSet(['庆友黄', '中国'])
+// console.log(result)
 
+// console.log(props.goods.skus)
 // 目标: 生成路径字典(对象/映射) => 传入一个 庆友黄+中国 => 有货
 // obj['中国+10cm']
 // obj['中国', '10cm'] 无法取值, 需要拼接
 function getPathMap() {
   // 1. 筛选无效的数据 (没有库存的)
-  // console.log(props.goods)
   const skus = props.goods.skus.filter(item => item.inventory > 0)
   // console.log(skus)
   // 创建一个路径字典
@@ -51,7 +51,9 @@ function getPathMap() {
     // 4. 往路径字典对象中添加属性
     result.forEach(arrItem => {
       // console.log(arrItem.join('☆'))
-      const key = arrItem.join('☆')
+      // const key = arrItem.join('☆')
+      // console.log(arrItem.join(SEPARATOR))
+      const key = arrItem.join(SEPARATOR)
       // pathMap[key] = true
       // 'xxx' in 对象 作用是判断 'xxx' 是否是对象的属性, 有就返回 true, 没有就是 false
       if (key in pathMap) {
@@ -72,12 +74,12 @@ function getPathMap() {
 function updateDisabledStatus() {
   // 先获取所有选中商品规格
   const selectedArr = getSelectedSpec()
-  console.log(selectedArr)
+  // console.log(selectedArr)
   // TODO: 待会儿处理具体禁用的逻辑
 
   // 该方法的作用: 循环所有 specs(规格) 去路径字典里找, 是否存在
   // 如果存在就不禁用, 如果不存在就禁用
-  props.goods.specs.forEach(item => {
+  props.goods.specs.forEach((item, index) => {
     item.values.forEach(sub => {
       // console.log(sub.name)
       // 去对象里找是否有这个属性, 该怎么做? key in obj 得到布尔值
@@ -88,7 +90,19 @@ function updateDisabledStatus() {
       //   sub.disabled = true
       // }
       // 只要是将 if 条件表达式的结果赋值给某个对象, 都可以用这种办法: 直接将条件表达式赋给对象的属性
+      // 开发小技巧
       sub.disabled = !(sub.name in pathMap)
+      // 先获取所有选中商品规格
+      // 返回的数据是: ['黑色', '', '']
+      const selectedArr = getSelectedSpec()
+      // console.log(selectedArr)
+      // TODO: 待会儿处理具体禁用的逻辑
+      selectedArr[index] = sub.name
+      // console.log(selectedArr, sub.name, index)
+      // console.log(selectedArr.filter(v => v).join(SEPARATOR))
+      const key = selectedArr.filter(v => v).join(SEPARATOR)
+      // sub.disabled = !(sub.name in pathMap)
+      sub.disabled = !(key in pathMap)
     })
   })
 }
@@ -114,9 +128,11 @@ function getSelectedSpec() {
   return arr
 }
 
+// 1. 获取路径字典
 const pathMap = getPathMap()
 // console.log(pathMap)
 
+// 2. 更新单个规格的禁用状态
 updateDisabledStatus()
 
 </script>
