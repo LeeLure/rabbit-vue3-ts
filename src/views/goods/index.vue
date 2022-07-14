@@ -6,6 +6,7 @@ import GoodsImage from './components/goods-image.vue';
 import GoodsSales from './components/goods-sales.vue';
 import GoodsName from './components/goods-name.vue';
 import GoodsSku from './components/goods-sku.vue';
+import GoodsDetail from './components/goods-detail.vue';
 
 const { goods } = useStore()
 
@@ -98,7 +99,10 @@ const count = ref(1)
       <div class="goods-footer">
         <div class="goods-article">
           <!-- 商品+评价 -->
-          <div class="goods-tabs"></div>
+          <div class="goods-tabs" v-if="goods.info.details">
+            <!-- 商品详情 -->
+            <GoodsDetail :goods="goods.info" />
+          </div>
         </div>
         <!-- 24热榜+专题推荐 -->
         <div class="goods-aside"></div>
@@ -122,6 +126,21 @@ const count = ref(1)
   .spec {
     flex: 1;
     padding: 30px 30px 30px 0;
+  }
+}
+
+.goods-footer {
+  display: flex;
+  margin-top: 20px;
+
+  .goods-article {
+    width: 940px;
+    margin-right: 20px;
+  }
+
+  .goods-aside {
+    width: 280px;
+    min-height: 1000px;
   }
 }
 
