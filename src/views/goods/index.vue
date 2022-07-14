@@ -84,6 +84,9 @@ const hChangeSku = (skuId: string) => {
             3. 当全部规格勾选后会返回一个 skuId 供父组件使用
            -->
           <GoodsSku @change-sku="hChangeSku" sku-id="1369155864430120962" :goods="goods.info" />
+
+          <!-- 商品数量 -->
+          <XtxNumbox />
         </div>
       </div>
 

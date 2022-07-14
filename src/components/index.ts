@@ -7,6 +7,7 @@ import defaultImage from '@/assets/images/200.png'
 import Bread from './Bread/index.vue'
 import BreadItem from './Bread/Item.vue'
 import City from './city/index.vue'
+import Numbox from './number/index.vue'
 
 
 export default {
@@ -23,6 +24,9 @@ export default {
     app.component(BreadItem.name, BreadItem)
     // 城市
     app.component(City.name, City)
+    // 商品数量
+    app.component(Numbox.name, Numbox)
+
 
 
     // 全局注册组件
