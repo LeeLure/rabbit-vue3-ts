@@ -2,10 +2,8 @@
 import { GoodsInfo, SpecItem, ValueItem } from '@/types/data';
 import bwPowerSet from '@/utils/bwPowerSet'
 
-const props = defineProps<{
-  goods: GoodsInfo
-  skuId?: string
-}>()
+const props = defineProps<{ goods: GoodsInfo, skuId?: string }>()
+const emit = defineEmits<{ (e: 'changeSku', skuId: string): void }>()
 
 const SEPARATOR = '☆'
 
@@ -24,6 +22,24 @@ const changeSelected = (sub: ValueItem, item: SpecItem) => {
   // 更新组合规格的禁用状态
   // 该调用必须在排他结束后执行
   updateDisabledStatus()
+
+  // 获取当前选中的规格
+  // 判断是否选中了所有规格, 如果选中了就子传父将 skuId 传递过去
+  const result = getSelectedSpec()
+  // console.log(result)
+  // 此方案可行
+  // const isAll = result.every(item => item)
+  // console.log(isAll)
+  // 此方案也可行
+  // result.filter(i => i).length === props.goods.specs.length
+  // 当全不选中, 将 skuId 传递给父组件
+  if (result.every(item => item)) {
+    // 如何获取 skuId ?
+    const key = result.join(SEPARATOR)
+    const val = pathMap[key]
+    // console.log(val[0])
+    emit('changeSku', val[0])
+  }
 }
 
 // 测试 powerset 算法

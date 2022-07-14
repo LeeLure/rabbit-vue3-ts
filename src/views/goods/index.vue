@@ -23,6 +23,18 @@ watchEffect(() => {
   goods.getGoodsInfo(route.params.id as string)
 })
 
+const hChangeSku = (skuId: string) => {
+  // console.log('父组件得到的 skuId:', skuId)
+  // 根据 skuId 找到 sku 对象
+  const sku = goods.info.skus.find(item => item.id === skuId)
+  // console.log(sku)
+  // 找不到就 return
+  if (!sku) return
+  // 修改商品价格 (此处应该定义 pinia 中的 actions 后修改)
+  goods.info.price = sku.price
+  goods.info.oldPrice = sku.oldPrice
+}
+
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -66,7 +78,12 @@ watchEffect(() => {
           <GoodsName :goods="goods.info" />
 
           <!-- 商品规格 sku -->
-          <GoodsSku sku-id="1369155864430120962" :goods="goods.info" />
+          <!-- 
+            1. 传入数据会渲染 (无库存禁用)
+            2. 传入 skuId 会自动勾选, 无货不会勾选
+            3. 当全部规格勾选后会返回一个 skuId 供父组件使用
+           -->
+          <GoodsSku @change-sku="hChangeSku" sku-id="1369155864430120962" :goods="goods.info" />
         </div>
       </div>
 
