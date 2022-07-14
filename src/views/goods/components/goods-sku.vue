@@ -21,6 +21,11 @@ const changeSelected = (sub: ValueItem, item: SpecItem) => {
   // 修改当前被点击的对象属性 selected 取反
   // selected 默认是 undefined 而 undefined 取反正好是 true
   sub.selected = !sub.selected
+
+  // 调用 updateDisabledStatus
+  // 更新组合规格的禁用状态
+  // 该调用必须在排他结束后执行
+  updateDisabledStatus()
 }
 
 
@@ -65,6 +70,11 @@ function getPathMap() {
 
 // 修改禁用状态, 页面加载时就对所有元素进行修改
 function updateDisabledStatus() {
+  // 先获取所有选中商品规格
+  const selectedArr = getSelectedSpec()
+  console.log(selectedArr)
+  // TODO: 待会儿处理具体禁用的逻辑
+
   // 该方法的作用: 循环所有 specs(规格) 去路径字典里找, 是否存在
   // 如果存在就不禁用, 如果不存在就禁用
   props.goods.specs.forEach(item => {
@@ -81,6 +91,27 @@ function updateDisabledStatus() {
       sub.disabled = !(sub.name in pathMap)
     })
   })
+}
+
+// 获取被选中的规格
+function getSelectedSpec() {
+  // 希望获取每个规格被选中的值: ['', '', '']
+  const arr: string[] = []
+  // 遍历所有的规格, 获取它们的选中状态 (selected)
+  props.goods.specs.forEach(item => {
+    const result = item.values.find(v => v.selected)
+    // console.log(result?.name)
+    arr.push(result?.name || '')
+    // item.values.forEach(sub => {
+    // console.log(sub.name, sub.selected)
+    //   if (sub.selected) {
+    //     arr.push(sub.name)
+    //   } else {
+    //     arr.push('')
+    //   }
+    // })
+  })
+  return arr
 }
 
 const pathMap = getPathMap()

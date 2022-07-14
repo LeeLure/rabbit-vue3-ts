@@ -200,7 +200,7 @@ export type GoodsInfo = {
 // 商品的规格类型
 export type SpecItem = {
   name: string
-  values: valueItem[]
+  values: ValueItem[]
 }
 
 // 商品的规格的值的类型
