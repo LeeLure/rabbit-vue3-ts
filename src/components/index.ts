@@ -8,6 +8,7 @@ import Bread from './Bread/index.vue'
 import BreadItem from './Bread/Item.vue'
 import City from './city/index.vue'
 import Numbox from './number/index.vue'
+import Button from './button/index.vue'
 
 
 export default {
@@ -25,6 +26,8 @@ export default {
     // 城市
     app.component(City.name, City)
     // 商品数量
+    app.component(Button.name, Button)
+    // 按钮
     app.component(Numbox.name, Numbox)
 
 

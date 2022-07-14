@@ -88,6 +88,9 @@ const count = ref(1)
 
           <!-- 商品数量 -->
           <XtxNumbox v-model="count" showLable :min="1" :max="99" />
+
+          <!-- 按钮 -->
+          <XtxButton type="primary" style="margin-top: 20px;">加入购物车</XtxButton>
         </div>
       </div>
 
