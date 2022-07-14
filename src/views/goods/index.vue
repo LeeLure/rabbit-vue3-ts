@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import useStore from '@/store';
-import { watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import GoodsImage from './components/goods-image.vue';
 import GoodsSales from './components/goods-sales.vue';
@@ -35,6 +35,7 @@ const hChangeSku = (skuId: string) => {
   goods.info.oldPrice = sku.oldPrice
 }
 
+const count = ref(1)
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -86,7 +87,7 @@ const hChangeSku = (skuId: string) => {
           <GoodsSku @change-sku="hChangeSku" sku-id="1369155864430120962" :goods="goods.info" />
 
           <!-- 商品数量 -->
-          <XtxNumbox />
+          <XtxNumbox v-model="count" showLable :min="1" :max="99" />
         </div>
       </div>
 

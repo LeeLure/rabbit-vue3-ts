@@ -1,13 +1,34 @@
 <script lang="ts" setup name="XtxNumbox">
 //
+const props = defineProps<{
+  modelValue: number
+  min: number
+  max: number
+  showLable?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', val: number): void
+}>()
+
+const sub = () => {
+  if (props.modelValue <= props.min) return
+  emit('update:modelValue', props.modelValue - 1)
+}
+
+const add = () => {
+  if (props.modelValue >= props.max) return
+  emit('update:modelValue', props.modelValue + 1)
+}
+
 </script>
 <template>
   <div class="xtx-numbox">
-    <div class="label">数量</div>
+    <div class="label" v-if="showLable">数量</div>
     <div class="numbox">
-      <a href="javascript:;">-</a>
-      <input type="text" readonly value="1" />
-      <a href="javascript:;">+</a>
+      <a href="javascript:;" @click="sub">-</a>
+      <input type="text" readonly :value="modelValue" />
+      <a href="javascript:;" @click="add">+</a>
     </div>
   </div>
 </template>
