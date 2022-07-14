@@ -209,6 +209,7 @@ export type ValueItem = {
   name: string
   picture: string
   selected: boolean
+  disabled: boolean
 }
 
 // sku 类型
