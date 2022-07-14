@@ -66,7 +66,7 @@ watchEffect(() => {
           <GoodsName :goods="goods.info" />
 
           <!-- 商品规格 sku -->
-          <GoodsSku :goods="goods.info" />
+          <GoodsSku sku-id="1369155864430120962" :goods="goods.info" />
         </div>
       </div>
 

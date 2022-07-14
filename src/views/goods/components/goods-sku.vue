@@ -4,6 +4,7 @@ import bwPowerSet from '@/utils/bwPowerSet'
 
 const props = defineProps<{
   goods: GoodsInfo
+  skuId?: string
 }>()
 
 const SEPARATOR = '☆'
@@ -128,11 +129,36 @@ function getSelectedSpec() {
   return arr
 }
 
+// 初始化勾选状态
+function initSpecSelected() {
+  if (!props.skuId) return
+  // 通过 skuId 去找到当前 sku 勾选的规格
+  const result = props.goods.skus.find(item => item.id === props.skuId)
+  if (!result) return
+  // console.log('通过 ID 找到的 sku:', result.specs)
+  const selectArr = result.specs.map(item => item.valueName)
+  // console.log(selectArr)
+  // 遍历所有的规格, 处理选中状态
+  props.goods.specs.forEach(item => {
+    item.values.forEach(sub => {
+      sub.selected = selectArr.includes(sub.name)
+      // sub.selected
+      // sub.name = 
+      // if (selectArr.includes(sub.name)) {
+      //   sub.selected = true
+      // }
+    })
+  })
+}
+
 // 1. 获取路径字典
 const pathMap = getPathMap()
 // console.log(pathMap)
 
-// 2. 更新单个规格的禁用状态
+// 2. 初始化勾选状态
+initSpecSelected()
+
+// 3. 更新单个规格的禁用状态
 updateDisabledStatus()
 
 </script>
