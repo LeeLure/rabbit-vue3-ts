@@ -6,9 +6,28 @@ const active = ref<'account' | 'mobile'>('account')
 
 const isAgree = ref(false)
 
+const form = ref({
+  account: '',
+  password: '',
+  isAgree: false,
+})
+
 const login = () => {
   // Message({ type: 'error', text: '登录失败', duration: 1000 })
-  Message.success('登陆成功')
+  // Message.success('登陆成功')
+  if (form.value.account === '') {
+    Message({ type: 'error', text: '用户名或手机号不能为空' })
+    return
+  }
+  if (form.value.password === '') {
+    Message({ type: 'error', text: '密码不能为空' })
+    return
+  }
+  if (!form.value.isAgree) {
+    Message({ type: 'error', text: '请同意许可' })
+    return
+  }
+  console.log('通过校验，可以发送请求')
 }
 </script>
 <template>
@@ -26,14 +45,14 @@ const login = () => {
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input type="text" placeholder="请输入用户名" />
+            <input v-model="form.account" type="text" placeholder="请输入用户名" />
           </div>
           <!-- <div class="error"><i class="iconfont icon-warning" />请输入手机号</div> -->
         </div>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-lock"></i>
-            <input type="password" placeholder="请输入密码" />
+            <input v-model="form.password" type="password" placeholder="请输入密码" />
           </div>
         </div>
       </template>
@@ -58,7 +77,7 @@ const login = () => {
           <!-- <span>我已同意</span> -->
           <!-- <XtxCheckbox label="我已同意" v-model="isAgree" /> -->
           <!-- <XtxCheckBox v-model="isAgree">我已同意</XtxCheckBox> -->
-          <XtxCheckbox v-model="isAgree">我已同意</XtxCheckbox>
+          <XtxCheckbox v-model="form.isAgree">我已同意</XtxCheckbox>
           <a href="javascript:;">《隐私条款》</a>
           <span>和</span>
           <a href="javascript:;">《服务条款》</a>
