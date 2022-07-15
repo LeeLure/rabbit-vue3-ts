@@ -35,3 +35,25 @@ export function Message({ type, text, duration = 2000 }: Options) {
     div.remove() // 自我了结
   }, duration)
 }
+
+Message.error = function (text: string, duration = 2000) {
+  Message({
+    type: 'error',
+    text,
+    duration,
+  })
+}
+Message.success = function (text: string, duration = 2000) {
+  Message({
+    type: 'success',
+    text,
+    duration,
+  })
+}
+Message.warning = function (text: string, duration = 2000) {
+  Message({
+    type: 'warning',
+    text,
+    duration,
+  })
+}

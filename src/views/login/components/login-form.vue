@@ -7,7 +7,8 @@ const active = ref<'account' | 'mobile'>('account')
 const isAgree = ref(false)
 
 const login = () => {
-  Message({ type: 'error', text: '登录失败', duration: 1000 })
+  // Message({ type: 'error', text: '登录失败', duration: 1000 })
+  Message.success('登陆成功')
 }
 </script>
 <template>
