@@ -3,6 +3,7 @@ import { Message } from '@/components/message';
 import { ref } from 'vue';
 import useStore from '@/store'
 import { useRouter } from 'vue-router';
+import { useField, useForm } from 'vee-validate'
 
 const active = ref<'account' | 'mobile'>('account')
 
@@ -21,31 +22,50 @@ const form = ref({
 const login = async () => {
   // Message({ type: 'error', text: '登录失败', duration: 1000 })
   // Message.success('登陆成功')
-  if (form.value.account === '') {
-    Message({ type: 'error', text: '用户名或手机号不能为空' })
-    return
-  }
-  if (form.value.password === '') {
-    Message({ type: 'error', text: '密码不能为空' })
-    return
-  }
-  if (!form.value.isAgree) {
-    Message({ type: 'error', text: '请同意许可' })
-    return
-  }
-  console.log('通过校验，可以发送请求')
+  // if (form.value.account === '') {
+  //   Message({ type: 'error', text: '用户名或手机号不能为空' })
+  //   return
+  // }
+  // if (form.value.password === '') {
+  //   Message({ type: 'error', text: '密码不能为空' })
+  //   return
+  // }
+  // if (!form.value.isAgree) {
+  //   Message({ type: 'error', text: '请同意许可' })
+  //   return
+  // }
+  // console.log('通过校验，可以发送请求')
 
   // 发请求
   try {
     await user.login(form.value)
 
     // 跳转首页
-
     router.push('/')
   } catch (e) {
     Message.error('登录失败, 请检查用户名和密码')
   }
 }
+
+// 实时校验提醒用户
+// useForm 用于定义校验规则
+useForm({
+  // 用于指定要校验的表单规则
+  validationSchema: {
+    // 参数1: 要校验的数据项
+    account(value: string) {
+      // 在这里可以对 account 内容做校验, 如果不符合条件, 就直接返回错误信息
+      if (value?.trim().length === 0) return '用户名不能为空'
+      // 如果通过校验返回 true
+      return true
+    }
+  }
+})
+// 会返回一个对象, 一般直接进行解构
+// 将其中的 value 和 errorMessage 提取出来
+// value 属性是一个响应式的值, 用于给表单元素进行双向绑定的
+const { value, errorMessage } = useField('account')
+
 </script>
 <template>
   <div class="account-box">
@@ -62,9 +82,9 @@ const login = async () => {
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input v-model="form.account" type="text" placeholder="请输入用户名" />
+            <input v-model="value" type="text" placeholder="请输入用户名" />
           </div>
-          <!-- <div class="error"><i class="iconfont icon-warning" />请输入手机号</div> -->
+          <div class="error" v-if="errorMessage"><i class="iconfont icon-warning" />{{ errorMessage }}</div>
         </div>
         <div class="form-item">
           <div class="input">
