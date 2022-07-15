@@ -1,5 +1,5 @@
 <script lang="ts" setup name="XtxMessage">
-import { PropType } from 'vue'
+import { onMounted, PropType, ref } from 'vue'
 
 defineProps({
   type: {
@@ -33,19 +33,51 @@ const style = {
     borderColor: 'rgb(225, 243, 216)',
   },
 }
+
+const isShow = ref(false)
+
+// 当组件挂载的时候执行
+onMounted(() => {
+  isShow.value = true
+})
+
 </script>
 
 <template>
-  <div class="xtx-message" :style="style[type]">
-    <i class="iconfont" :class="style[type].icon"></i>
-    <span class="text">
-      <!-- <slot></slot> -->
-      {{ text }}
-    </span>
-  </div>
+  <transition name="down">
+    <div v-if="isShow" class="xtx-message" :style="style[type]">
+      <i class="iconfont" :class="style[type].icon"></i>
+      <span class="text">
+        <!-- <slot></slot> -->
+        {{ text }}
+      </span>
+    </div>
+  </transition>
 </template>
 
 <style scoped lang="less">
+// .down-enter-from {}
+// .down-enter-active {}
+// .down-enter-to {}
+
+.down {
+  &-enter {
+    &-from {
+      transform: translate3d(0, -75px, 0);
+      opacity: 0;
+    }
+
+    &-active {
+      transition: all 0.5s;
+    }
+
+    &-to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+
 .xtx-message {
   width: 300px;
   height: 50px;
