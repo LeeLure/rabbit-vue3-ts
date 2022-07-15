@@ -2,6 +2,7 @@
 import LoginHeader from './components/login-header.vue'
 import LoginFooter from './components/login-footer.vue'
 import { ref } from 'vue';
+import LoginForm from './components/login-form.vue';
 
 // 字面量类型
 const active = ref<'account' | 'qrcode'>('account')
@@ -16,7 +17,9 @@ const active = ref<'account' | 'qrcode'>('account')
       </nav>
 
       <!-- 表单 -->
-      <div v-if="active === 'account'" class="account-box">表单</div>
+      <div v-if="active === 'account'" class="account-box">
+        <LoginForm />
+      </div>
       <!-- 二维码 -->
       <div v-else class="qrcode-box">
         <img src="@/assets/images/qrcode.jpg" alt="" />
