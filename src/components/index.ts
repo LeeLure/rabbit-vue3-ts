@@ -9,6 +9,7 @@ import BreadItem from './Bread/Item.vue'
 import City from './city/index.vue'
 import Numbox from './number/index.vue'
 import Button from './button/index.vue'
+import CheckBox from './checkbox/index.vue'
 
 
 export default {
@@ -29,6 +30,8 @@ export default {
     app.component(Button.name, Button)
     // 按钮
     app.component(Numbox.name, Numbox)
+    // 复选框
+    app.component(CheckBox.name, CheckBox)
 
 
 

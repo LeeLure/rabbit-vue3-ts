@@ -1,8 +1,9 @@
 <script lang="ts" setup name="LoginForm">
 import { ref } from 'vue';
 
-
 const active = ref<'account' | 'mobile'>('account')
+
+const isAgree = ref(false)
 </script>
 <template>
   <div class="account-box">
@@ -48,7 +49,10 @@ const active = ref<'account' | 'mobile'>('account')
       <div class="form-item">
         <div class="agree">
 
-          <span>我已同意</span>
+          <!-- <span>我已同意</span> -->
+          <!-- <XtxCheckbox label="我已同意" v-model="isAgree" /> -->
+          <!-- <XtxCheckBox v-model="isAgree">我已同意</XtxCheckBox> -->
+          <XtxCheckbox v-model="isAgree">我已同意</XtxCheckbox>
           <a href="javascript:;">《隐私条款》</a>
           <span>和</span>
           <a href="javascript:;">《服务条款》</a>

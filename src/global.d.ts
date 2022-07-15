@@ -6,6 +6,8 @@ import XtxBreadItem from '@/components/bread/item.vue'
 import XtxCity from '@/components/city/index.vue'
 import XtxNumBox from '@/components/number/index.vue'
 import XtxButton from '@/components/button/index.vue'
+import XtxCheckBox from '@/components/checkbox/index.vue'
+
 // 参考：
 declare module 'vue' {
   export interface GlobalComponents {
@@ -18,6 +20,7 @@ declare module 'vue' {
     XtxCity: typeof XtxCity
     XtxNumBox: typeof XtxNumBox
     XtxButton: typeof XtxButton
+    XtxCheckBox: typeof XtxCheckBox
   }
 }
 export { }
