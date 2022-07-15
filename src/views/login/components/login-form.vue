@@ -1,9 +1,14 @@
 <script lang="ts" setup name="LoginForm">
+import { Message } from '@/components/message';
 import { ref } from 'vue';
 
 const active = ref<'account' | 'mobile'>('account')
 
 const isAgree = ref(false)
+
+const login = () => {
+  Message({ type: 'error', text: '登录失败' })
+}
 </script>
 <template>
   <div class="account-box">
@@ -58,7 +63,7 @@ const isAgree = ref(false)
           <a href="javascript:;">《服务条款》</a>
         </div>
       </div>
-      <a href="javascript:;" class="btn">登录</a>
+      <a href="javascript:;" class="btn" @click="login">登录</a>
     </div>
     <div class="action">
       <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="" />
