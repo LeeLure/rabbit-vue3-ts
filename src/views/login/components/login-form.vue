@@ -1,23 +1,24 @@
 <script lang="ts" setup name="LoginForm">
 import { Message } from '@/components/message';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import useStore from '@/store'
 import { useRouter } from 'vue-router';
 import { useField, useForm } from 'vee-validate'
 
 const active = ref<'account' | 'mobile'>('account')
 
-const isAgree = ref(false)
+// const isAgree = ref(false)
 
 const { user } = useStore()
 
 const router = useRouter()
 
-const form = ref({
-  account: '',
-  password: '',
-  isAgree: false,
-})
+// 表单校验库 vee-validate 给我们提供了响应式数据, 所以不需要单独定义了
+// const form = ref({
+//   account: '',
+//   password: '',
+//   isAgree: false,
+// })
 
 const login = async () => {
   // Message({ type: 'error', text: '登录失败', duration: 1000 })
@@ -36,9 +37,16 @@ const login = async () => {
   // }
   // console.log('通过校验，可以发送请求')
 
+  // 兜底校验
+  const res = await validate()
+  // console.log(res)
+  if (!res.valid) return
+
   // 发请求
   try {
-    await user.login(form.value)
+    await user.login({ account: account.value, password: password.value })
+    // 登录成功了
+    Message.success('登录成功!')
 
     // 跳转首页
     router.push('/')
@@ -49,14 +57,38 @@ const login = async () => {
 
 // 实时校验提醒用户
 // useForm 用于定义校验规则
-useForm({
+const { validate, resetForm } = useForm({
   // 用于指定要校验的表单规则
   validationSchema: {
     // 参数1: 要校验的数据项
     account(value: string) {
       // 在这里可以对 account 内容做校验, 如果不符合条件, 就直接返回错误信息
       if (value?.trim().length === 0) return '用户名不能为空'
+      // 我希望 6-20 个字符，需要以字母开头
+      if (!/^[a-zA-Z]\w{5,19}$/.test(value)) return '用户名必须是 6 ~ 20个字符, 以字母开头'
       // 如果通过校验返回 true
+      return true
+    },
+    password(value: string) {
+      // 非空
+      if (value?.trim().length === 0) return '密码不能为空'
+      // 6 ~ 24 个字符
+      if (!/^\w{6,24}$/.test(value)) return '密码必须是 6 ~ 24 位的字符'
+      return true
+    },
+    isAgree(value: boolean) {
+      // 必选
+      if (!value) return '请勾选同意条款'
+      return true
+    },
+    mobile: (value: string) => {
+      if (!value) return '请输入手机号'
+      if (!/^1[3-9]\d{9}$/.test(value)) return '手机号格式错误'
+      return true
+    },
+    code: (value: string) => {
+      if (!value) return '请输入验证码'
+      if (!/^\d{6}$/.test(value)) return '验证码格式错误'
       return true
     }
   }
@@ -64,8 +96,15 @@ useForm({
 // 会返回一个对象, 一般直接进行解构
 // 将其中的 value 和 errorMessage 提取出来
 // value 属性是一个响应式的值, 用于给表单元素进行双向绑定的
-const { value, errorMessage } = useField('account')
+const { value: account, errorMessage: accountMessage } = useField<string>('account')
+const { value: password, errorMessage: passwordMessage } = useField<string>('password')
+const { value: isAgree, errorMessage: isAgreeMessage } = useField<boolean>('isAgree')
+const { value: mobile, errorMessage: mobileMessage } = useField<string>('mobile')
+const { value: code, errorMessage: codeMessage } = useField<string>('code')
 
+// 如果监视响应式变量, 可以不用加箭头函数 也不用 .value
+// resetForm : 重置表单
+watch(active, () => resetForm())
 </script>
 <template>
   <div class="account-box">
@@ -82,30 +121,35 @@ const { value, errorMessage } = useField('account')
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input v-model="value" type="text" placeholder="请输入用户名" />
+            <input v-model="account" type="text" placeholder="请输入用户名" />
           </div>
-          <div class="error" v-if="errorMessage"><i class="iconfont icon-warning" />{{ errorMessage }}</div>
+          <div class="error" v-if="accountMessage"><i class="iconfont icon-warning" />{{ accountMessage }}</div>
         </div>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-lock"></i>
-            <input v-model="form.password" type="password" placeholder="请输入密码" />
+            <input v-model="password" type="password" placeholder="请输入密码" />
           </div>
+          <div class="error" v-if="password"><i class="iconfont icon-warning" />{{ passwordMessage }}</div>
         </div>
       </template>
       <template v-else>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input type="text" placeholder="请输入手机号" />
+            <input v-model="mobile" type="text" placeholder="请输入手机号" />
           </div>
+          <div class="error" v-if="mobile"><i class="iconfont icon-warning" />{{ mobileMessage }}</div>
+
         </div>
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-code"></i>
-            <input type="password" placeholder="请输入验证码" />
+            <input v-model="code" type="password" placeholder="请输入验证码" />
             <span class="code">发送验证码</span>
           </div>
+          <div class="error" v-if="codeMessage"><i class="iconfont icon-warning" />{{ codeMessage }}</div>
+
         </div>
       </template>
       <div class="form-item">
@@ -114,11 +158,12 @@ const { value, errorMessage } = useField('account')
           <!-- <span>我已同意</span> -->
           <!-- <XtxCheckbox label="我已同意" v-model="isAgree" /> -->
           <!-- <XtxCheckBox v-model="isAgree">我已同意</XtxCheckBox> -->
-          <XtxCheckbox v-model="form.isAgree">我已同意</XtxCheckbox>
+          <XtxCheckbox v-model="isAgree">我已同意</XtxCheckbox>
           <a href="javascript:;">《隐私条款》</a>
           <span>和</span>
           <a href="javascript:;">《服务条款》</a>
         </div>
+        <div class="error" v-if="isAgreeMessage"><i class="iconfont icon-warning" />{{ isAgreeMessage }}</div>
       </div>
       <a href="javascript:;" class="btn" @click="login">登录</a>
     </div>
