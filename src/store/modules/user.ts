@@ -7,7 +7,7 @@ export default defineStore('user', {
 
   state() {
     return {
-      profile: {}
+      profile: {} as Profile
     }
   },
 
