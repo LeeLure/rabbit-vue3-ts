@@ -1,10 +1,16 @@
 <script lang="ts" setup name="LoginForm">
 import { Message } from '@/components/message';
 import { ref } from 'vue';
+import useStore from '@/store'
+import { useRouter } from 'vue-router';
 
 const active = ref<'account' | 'mobile'>('account')
 
 const isAgree = ref(false)
+
+const { user } = useStore()
+
+const router = useRouter()
 
 const form = ref({
   account: '',
@@ -12,7 +18,7 @@ const form = ref({
   isAgree: false,
 })
 
-const login = () => {
+const login = async () => {
   // Message({ type: 'error', text: '登录失败', duration: 1000 })
   // Message.success('登陆成功')
   if (form.value.account === '') {
@@ -28,6 +34,17 @@ const login = () => {
     return
   }
   console.log('通过校验，可以发送请求')
+
+  // 发请求
+  try {
+    await user.login(form.value)
+
+    // 跳转首页
+
+    router.push('/')
+  } catch (e) {
+    Message.error('登录失败, 请检查用户名和密码')
+  }
 }
 </script>
 <template>
