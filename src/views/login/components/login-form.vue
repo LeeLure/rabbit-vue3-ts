@@ -57,6 +57,8 @@ const login = async () => {
 
 // 实时校验提醒用户
 // useForm 用于定义校验规则
+// validate：用于兜底校验
+// resetForm：用于重置表单
 const { validate, resetForm } = useForm({
   // 用于指定要校验的表单规则
   validationSchema: {
