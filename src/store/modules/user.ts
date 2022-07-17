@@ -2,7 +2,7 @@ import { ApiRes } from './../../types/data.d';
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
 import { Profile } from '@/types/user';
-import { getProfile, setProfile } from '@/utils/storage';
+import { getProfile, removeProfile, setProfile } from '@/utils/storage';
 
 export default defineStore('user', {
 
@@ -37,6 +37,13 @@ export default defineStore('user', {
 
       // 本地化
       setProfile(res.data.result)
+    },
+
+    logout() {
+      // 清除 pinia 的数据
+      this.profile = {} as Profile
+      // 清除 localStorage 的信息
+      removeProfile()
     }
   }
 })

@@ -1,6 +1,17 @@
 <script lang="ts" setup name="AppTopnav">
 import useStore from '@/store';
+import { useRouter } from 'vue-router';
 const { user } = useStore()
+
+const router = useRouter()
+
+// 退出
+const logout = () => {
+  // 清除数据
+  user.logout()
+  // 跳转至登录页
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -12,7 +23,7 @@ const { user } = useStore()
             <a href="javascript:;"><i class="iconfont icon-user"></i>{{ user.profile.nickname || user.profile.account
             }}</a>
           </li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
         <template v-else>
           <li>
