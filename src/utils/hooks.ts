@@ -1,4 +1,4 @@
-import { useIntersectionObserver } from "@vueuse/core"
+import { useIntersectionObserver, useIntervalFn } from "@vueuse/core"
 import { ref } from "vue"
 
 // 数据懒加载
@@ -23,4 +23,23 @@ export function useLazyData(callback: () => void) {
   })
 
   return target
+}
+
+// 定时器
+export function useCountDown(count: number) {
+  let time = ref(0)
+
+  // pause: 暂停
+  // resume: 继续
+  const { pause, resume } = useIntervalFn(() => {
+    time.value--
+    if (time.value === 0) pause()
+  }, 1000, { immediate: false })
+
+  const start = () => {
+    time.value = count
+    resume()
+  }
+
+  return { time, start }
 }
