@@ -119,14 +119,9 @@ const send = async () => {
   if (!res.valid) return mobileRef.value?.focus()
   // Message.error(res.errors[0])
 
-  try {
-    // 发送验证码
-    await user.sendMobileMsg(mobile.value)
-    Message.success('获取验证码成功')
-  } catch {
-    Message.error('获取验证码失败')
-  }
-
+  // 发送验证码
+  await user.sendMobileMsg(mobile.value)
+  Message.success('获取验证码成功')
 }
 </script>
 <template>
