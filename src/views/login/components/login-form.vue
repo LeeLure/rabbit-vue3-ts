@@ -101,6 +101,15 @@ const { validate, resetForm } = useForm({
       if (!/^\d{6}$/.test(value)) return '验证码格式错误'
       return true
     }
+  },
+  // 解决：type check failed for prop "modelValue". Expected Boolean, got Undefined  
+  // 设置默认值
+  initialValues: {
+    mobile: '13666666666',
+    code: '123456',
+    account: 'xiaotuxian001',
+    password: '123456',
+    isAgree: true
   }
 })
 // 会返回一个对象, 一般直接进行解构
@@ -141,7 +150,7 @@ const send = async () => {
   // }, 1000)
   //                                -----
   const res = await validateMobile()
-  console.log(res);
+  // console.log(res);
   // 校验手机号：校验不通过，自动获取手机号的焦点
   if (!res.valid) return mobileRef.value?.focus()
   // Message.error(res.errors[0])
