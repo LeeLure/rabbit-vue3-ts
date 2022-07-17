@@ -57,7 +57,7 @@ const login = async () => {
 
 // 实时校验提醒用户
 // useForm 用于定义校验规则
-// validate：用于兜底校验
+// validate：用于兜底校验，校验表单所有字段
 // resetForm：用于重置表单
 const { validate, resetForm } = useForm({
   // 用于指定要校验的表单规则
@@ -101,12 +101,33 @@ const { validate, resetForm } = useForm({
 const { value: account, errorMessage: accountMessage } = useField<string>('account')
 const { value: password, errorMessage: passwordMessage } = useField<string>('password')
 const { value: isAgree, errorMessage: isAgreeMessage } = useField<boolean>('isAgree')
-const { value: mobile, errorMessage: mobileMessage } = useField<string>('mobile')
+// validate: 只校验此字段
+const { value: mobile, errorMessage: mobileMessage, validate: validateMobile } = useField<string>('mobile')
 const { value: code, errorMessage: codeMessage } = useField<string>('code')
 
+// 切换登录模式时重置表单
 // 如果监视响应式变量, 可以不用加箭头函数 也不用 .value
 // resetForm : 重置表单
 watch(active, () => resetForm())
+
+// 短信登录的校验
+const mobileRef = ref<HTMLInputElement | null>(null)
+const send = async () => {
+  const res = await validateMobile()
+  console.log(res);
+  // 校验不通过，自动获取手机号的焦点
+  if (!res.valid) return mobileRef.value?.focus()
+  // Message.error(res.errors[0])
+
+  try {
+    // 发送验证码
+    await user.sendMobileMsg(mobile.value)
+    Message.success('获取验证码成功')
+  } catch {
+    Message.error('获取验证码失败')
+  }
+
+}
 </script>
 <template>
   <div class="account-box">
@@ -139,7 +160,7 @@ watch(active, () => resetForm())
         <div class="form-item">
           <div class="input">
             <i class="iconfont icon-user"></i>
-            <input v-model="mobile" type="text" placeholder="请输入手机号" />
+            <input ref="mobileRef" v-model="mobile" type="text" placeholder="请输入手机号" />
           </div>
           <div class="error" v-if="mobile"><i class="iconfont icon-warning" />{{ mobileMessage }}</div>
 
@@ -148,7 +169,7 @@ watch(active, () => resetForm())
           <div class="input">
             <i class="iconfont icon-code"></i>
             <input v-model="code" type="password" placeholder="请输入验证码" />
-            <span class="code">发送验证码</span>
+            <span class="code" @click="send">发送验证码</span>
           </div>
           <div class="error" v-if="codeMessage"><i class="iconfont icon-warning" />{{ codeMessage }}</div>
 
