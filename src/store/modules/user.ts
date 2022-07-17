@@ -2,12 +2,13 @@ import { ApiRes } from './../../types/data.d';
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
 import { Profile } from '@/types/user';
+import { getProfile, setProfile } from '@/utils/storage';
 
 export default defineStore('user', {
 
   state() {
     return {
-      profile: {} as Profile
+      profile: getProfile() as Profile
     }
   },
 
@@ -18,6 +19,9 @@ export default defineStore('user', {
       const res = await axios.post<ApiRes<Profile>>('/login', data)
       // console.log(res);
       this.profile = res.data.result
+
+      // 本地化
+      setProfile(res.data.result)
     },
 
     // 获取手机验证码
@@ -30,6 +34,9 @@ export default defineStore('user', {
       const res = await axios.post<ApiRes<Profile>>('/login/code', data)
       // 1. 保存用户信息到 state 中
       this.profile = res.data.result
+
+      // 本地化
+      setProfile(res.data.result)
     }
   }
 })
