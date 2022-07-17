@@ -4,6 +4,7 @@ import { ref, watch } from 'vue';
 import useStore from '@/store'
 import { useRouter } from 'vue-router';
 import { useField, useForm } from 'vee-validate'
+import { useIntervalFn } from '@vueuse/core'
 
 const active = ref<'account' | 'mobile'>('account')
 
@@ -112,16 +113,46 @@ watch(active, () => resetForm())
 
 // 短信登录的校验
 const mobileRef = ref<HTMLInputElement | null>(null)
-const send = async () => {
-  const res = await validateMobile()
-  console.log(res);
-  // 校验不通过，自动获取手机号的焦点
-  if (!res.valid) return mobileRef.value?.focus()
-  // Message.error(res.errors[0])
+const codeRef = ref<HTMLInputElement | null>(null)
 
-  // 发送验证码
-  await user.sendMobileMsg(mobile.value)
-  Message.success('获取验证码成功')
+
+
+let time = ref(0)
+
+// pause: 暂停
+// resume: 继续
+const { pause, resume } = useIntervalFn(() => {
+  time.value--
+  if (time.value === 0) pause()
+
+}, 1000, { immediate: false })
+
+const send = async () => {
+  if (time.value > 0) return
+  time.value = 5
+  resume()
+  // // 判断：倒计时未结束不允许再次点击
+  // if (time.value > 0) return
+  // time.value = 5
+  // // 开启定时器
+  // const timeId = setInterval(() => {
+  //   time.value--
+  //   // 不能为负数
+  //   if (time.value === 0) {
+  //     // 清除定时器
+  //     clearInterval(timeId)
+  //   }
+  // }, 1000)
+
+  // const res = await validateMobile()
+  // console.log(res);
+  // // 校验不通过，自动获取手机号的焦点
+  // if (!res.valid) return mobileRef.value?.focus()
+  // // Message.error(res.errors[0])
+
+  // // 发送验证码
+  // await user.sendMobileMsg(mobile.value)
+  // Message.success('获取验证码成功')
 }
 </script>
 <template>
@@ -164,7 +195,7 @@ const send = async () => {
           <div class="input">
             <i class="iconfont icon-code"></i>
             <input v-model="code" type="password" placeholder="请输入验证码" />
-            <span class="code" @click="send">发送验证码</span>
+            <span ref="codeRef" class="code" @click="send">{{ time === 0 ? '发送验证码' : `${time}s后重新发送` }}</span>
           </div>
           <div class="error" v-if="codeMessage"><i class="iconfont icon-warning" />{{ codeMessage }}</div>
 
