@@ -23,6 +23,13 @@ export default defineStore('user', {
     // 获取手机验证码
     async sendMobileMsg(mobile: string) {
       await axios.get('/login/code', { params: { mobile } })
+    },
+
+    // 短信登录
+    async mobileLogin(data: { mobile: String, code: String }) {
+      const res = await axios.post<ApiRes<Profile>>('/login/code', data)
+      // 1. 保存用户信息到 state 中
+      this.profile = res.data.result
     }
   }
 })

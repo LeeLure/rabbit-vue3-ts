@@ -41,19 +41,26 @@ const login = async () => {
   // 兜底校验
   const res = await validate()
   // console.log(res)
-  if (!res.valid) return
+  // 不能判断五个校验项，在下面单独进行判断
+  // if (!res.valid) return
 
   // 发请求
-  try {
+  if (active.value === 'account') {
+    // 如果表单校验通过
+    if (res.errors.account || res.errors.password || res.errors.isAgree) return
     await user.login({ account: account.value, password: password.value })
-    // 登录成功了
-    Message.success('登录成功!')
-
-    // 跳转首页
-    router.push('/')
-  } catch (e) {
-    Message.error('登录失败, 请检查用户名和密码')
+  } else {
+    // 短信登录的校验
+    if (res.errors.mobile || res.errors.code || res.errors.isAgree) return
+    await user.mobileLogin({ mobile: mobile.value, code: code.value })
   }
+
+  // 登录成功了
+  Message.success('登录成功!')
+
+  // 跳转首页
+  router.push('/')
+
 }
 
 // 实时校验提醒用户
