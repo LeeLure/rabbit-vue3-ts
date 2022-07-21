@@ -13,4 +13,5 @@ declare namespace QC {
     check: () => boolean
     getMe: (callback: (openId: string) => void) => void
   }
+  const api: (api: 'get_user_info') => { success: (res: any) => void }
 }
