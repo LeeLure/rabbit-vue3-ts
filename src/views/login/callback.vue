@@ -4,6 +4,12 @@ import LoginFooter from "./components/login-footer.vue";
 import { ref } from "vue";
 import CallbackBind from "./components/callback-bind.vue";
 import CallbackPatch from "./components/callback-patch.vue";
+import useStore from '@/store';
+import { Message } from '@/components/message';
+import { useRouter } from 'vue-router';
+
+const { user } = useStore()
+const router = useRouter()
 
 const hasAccount = ref(true);
 
@@ -24,7 +30,17 @@ const isLogin = QC.Login.check();
 // 如果已经登陆, 就获取 openId
 if (isLogin) {
   QC.Login.getMe((openId) => {
-    console.log(openId);
+    QC.Login.getMe(async openId => {
+    // console.log(openId)
+    // 发请求给后台, 判断是否已注册已绑定
+    await user.qqLogin({
+      unionId: openId,
+      source: 6
+    })
+    // 提醒
+    Message.success('QQ 登录成功')
+    // 直接跳转到首页
+    router.push('/')
   });
 }
 </script>

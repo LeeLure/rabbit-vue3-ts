@@ -44,6 +44,13 @@ export default defineStore('user', {
       this.profile = {} as Profile
       // 清除 localStorage 的信息
       removeProfile()
+    },
+
+    // QQ登录
+    async qqLogin(data: { unionId: string, source: number }) {
+      const res = await axios.post<ApiRes<Profile>>('/login/social', data)
+      this.profile = res.data.result
+      setProfile(res.data.result)
     }
   }
 })

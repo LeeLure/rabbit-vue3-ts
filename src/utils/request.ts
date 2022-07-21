@@ -1,12 +1,13 @@
 import { Message } from '@/components/message'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 // 备用接口地址: http://pcapi-xiaotuxian-front-devtest.itheima.net/
 // https://apipc-xiaotuxian-front.itheima.net
 const instance = axios.create({
-  baseURL: 'http://pcapi-xiaotuxian-front.itheima.net/',
+  // baseURL: 'http://pcapi-xiaotuxian-front.itheima.net/',
   // baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net/',
   // baseURL: 'https://apipc-xiaotuxian-front.itheima.net',
+  baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net/', // 已绑定
   timeout: 5000
 })
 
@@ -27,10 +28,16 @@ instance.interceptors.response.use(
   function (response) {
     return response
   },
-  function (error) {
+  function (error: AxiosError<{ message: string, code: string }>) {
     // 对响应错误做点什么
-    if (!error.response) {
-      Message.error(error.response.data.message)
+    if (error.response) {
+      // Message.error(error.response.data.message)
+      const { code, message } = error.response.data
+      if (code === '501' && message === '三方登录失败') {
+        Message.success('欢迎来到小兔鲜, 请您绑定账号')
+      } else {
+        Message.error(message)
+      }
     } else {
       Message.error('网络异常，请稍后重置')
     }
