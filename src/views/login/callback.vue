@@ -1,11 +1,32 @@
 <script lang="ts" setup name="LoginCallback">
-import LoginHeader from './components/login-header.vue'
-import LoginFooter from './components/login-footer.vue'
-import { ref } from 'vue';
-import CallbackBind from './components/callback-bind.vue';
-import CallbackPatch from './components/callback-patch.vue';
+import LoginHeader from "./components/login-header.vue";
+import LoginFooter from "./components/login-footer.vue";
+import { ref } from "vue";
+import CallbackBind from "./components/callback-bind.vue";
+import CallbackPatch from "./components/callback-patch.vue";
 
-const hasAccount = ref(true)
+const hasAccount = ref(true);
+
+// 传入调用的 api 来实现功能: get_user_info
+// QC.api(api, paras, fmt, method)
+// QC.api('get_user_info')
+// QC.Login.signOut	登出
+// QC.Login.check 检查是否登录
+// QC.Login.getMe 获取 openId
+// QC.Login.signOut()
+// console.log(QC.Login.check())
+// QC.Login.getMe(openId => {
+//   console.log(openId)
+// })
+
+// 获取登录状态
+const isLogin = QC.Login.check();
+// 如果已经登陆, 就获取 openId
+if (isLogin) {
+  QC.Login.getMe((openId) => {
+    console.log(openId);
+  });
+}
 </script>
 
 <template>
