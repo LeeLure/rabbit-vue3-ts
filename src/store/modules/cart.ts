@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import axios from '@/utils/request'
 import { CartItem } from '@/types/cart'
 import { ApiRes } from '@/types/data'
+import { Confirm } from '@/components/confirm'
 
 export default defineStore('cart', {
   state() {
@@ -25,6 +26,8 @@ export default defineStore('cart', {
 
     // 删除
     async deleteCart(skuIds: string[]) {
+      await Confirm({ title: '提示', text: '确定要删除吗?' })
+
       await axios.delete('/member/cart', {
         data: {
           ids: skuIds

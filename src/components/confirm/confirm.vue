@@ -11,29 +11,32 @@ defineProps<{
 
 const isShow = ref(false);
 
-onMounted(() => {
+// 加一个宏任务延迟, 等 DOM 完全渲染出来后, 在修改变量, 让 DOM 渲染
+setTimeout(() => {
   isShow.value = true;
-});
+}, 0);
 </script>
 <template>
-  <Transition name="fade-in-out">
-    <div class="xtx-confirm">
-      <div class="wrapper">
-        <div class="header">
-          <h3>{{ title }}</h3>
-          <a href="JavaScript:;" class="iconfont icon-close-new"></a>
-        </div>
-        <div class="body">
-          <i class="iconfont icon-warning"></i>
-          <span>{{ text }}</span>
-        </div>
-        <div class="footer">
-          <XtxButton size="mini" type="gray" @click="cancelCallback">取消</XtxButton>
-          <XtxButton size="mini" type="primary" @click="confirmCallback">确认</XtxButton>
-        </div>
+  <!-- 可以通过 transition 加动画, 但是只能控制整体的动画, 无法让对话框和背景分开执行动画  -->
+  <!-- 为了优化用户体验, 可以选择使用 css 动画 -->
+  <!-- <Transition name="fade-in-out"> -->
+  <div class="xtx-confirm" :class="{ active: isShow }">
+    <div class="wrapper" :class="{ active: isShow }">
+      <div class="header">
+        <h3>{{ title }}</h3>
+        <a href="JavaScript:;" class="iconfont icon-close-new"></a>
+      </div>
+      <div class="body">
+        <i class="iconfont icon-warning"></i>
+        <span>{{ text }}</span>
+      </div>
+      <div class="footer">
+        <XtxButton size="mini" type="gray" @click="cancelCallback">取消</XtxButton>
+        <XtxButton size="mini" type="primary" @click="confirmCallback">确认</XtxButton>
       </div>
     </div>
-  </Transition>
+  </div>
+  <!-- </Transition> -->
 </template>
 
 <style scoped lang="less">
@@ -44,7 +47,12 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   z-index: 8888;
-  background: rgba(0, 0, 0, 0.5);
+  // background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0);
+  &.active {
+    background: rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+  }
   .wrapper {
     width: 400px;
     background: #fff;
@@ -73,6 +81,13 @@ onMounted(() => {
       .xtx-button {
         margin-left: 20px;
       }
+    }
+    transform: translate(-50%, -65%);
+    opacity: 0;
+    &.active {
+      opacity: 1;
+      transition: all 0.3s;
+      transform: translate(-50%, -50%);
     }
     .header {
       position: relative;

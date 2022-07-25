@@ -37,6 +37,10 @@ const router = createRouter({
         {
           path: 'palyground',
           component: () => import('@/views/palyground/index.vue')
+        },
+        {
+          path: 'cart',
+          component: () => import('@/views/cart/index.vue')
         }
       ]
     },

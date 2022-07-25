@@ -1,17 +1,25 @@
 <script lang="ts" setup name="AppTopnav">
-import useStore from '@/store';
-import { useRouter } from 'vue-router';
-const { user } = useStore()
+import { Confirm } from "@/components/confirm";
+import { Message } from "@/components/message";
+import useStore from "@/store";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const { user } = useStore();
+const router = useRouter();
 
-// 退出
-const logout = () => {
+const logout = async () => {
+  // 提醒用户是否真的要退出
+  await Confirm({
+    title: "提示",
+    text: "真的要退出吗?亲!",
+  });
   // 清除数据
-  user.logout()
+  user.logout();
   // 跳转至登录页
-  router.push('/login')
-}
+  router.push("/login");
+  // 提醒用户退出登录成功
+  Message.success("退出成功!");
+};
 </script>
 
 <template>
@@ -20,8 +28,10 @@ const logout = () => {
       <ul>
         <template v-if="user.profile.token">
           <li>
-            <a href="javascript:;"><i class="iconfont icon-user"></i>{{ user.profile.nickname || user.profile.account
-            }}</a>
+            <a href="javascript:;"
+              ><i class="iconfont icon-user"></i
+              >{{ user.profile.nickname || user.profile.account }}</a
+            >
           </li>
           <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
@@ -70,7 +80,7 @@ const logout = () => {
         }
       }
 
-      ~li {
+      ~ li {
         a {
           border-left: 2px solid #666;
         }

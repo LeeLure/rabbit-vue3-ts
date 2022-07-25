@@ -1,39 +1,53 @@
 <script lang="ts" setup name="HomeCategory">
-import useStore from '@/store';
-import { computed, ref } from 'vue';
+import useStore from "@/store";
+import { computed, ref } from "vue";
 // import Skeleton from '@/components/skeleton/index.vue'
 
-const { category } = useStore()
+const { category } = useStore();
 
-const categoryId = ref('')
+const categoryId = ref("");
 
 // 获取鼠标经过的 categoryId
 const hMouseenter = (id: string) => {
   // console.log(id);
   //bug 解决：数据未请求回来时 id 为 undefined 导致所有都高亮了
-  id && (categoryId.value = id)
-}
+  id && (categoryId.value = id);
+};
 
 // 计算属性 去 category 找到 id 相同的元素, 将其 goods 返回
-const goods = computed(() => category.list.find(item => item.id === categoryId.value)?.goods)
-
+const goods = computed(
+  () => category.list.find((item) => item.id === categoryId.value)?.goods
+);
 </script>
 <template>
   <div class="home-category" @mouseleave="categoryId = ''">
     <ul class="menu">
-      <li :class="{ active: categoryId === item.id }" @mouseenter="hMouseenter(item.id)" v-for="item in category.list"
-        :key="item.id">
+      <li
+        :class="{ active: categoryId === item.id }"
+        @mouseenter="hMouseenter(item.id)"
+        v-for="item in category.list"
+        :key="item.id"
+      >
         <RouterLink :to="`category/${item.id}`">{{ item.name }}</RouterLink>
         <!-- 骨架屏 -->
         <template v-if="item.children">
-          <RouterLink v-for="sub in item.children?.slice(0, 2)" :key="sub.id" :to="`category/sub/${sub.id} `">{{
-              sub.name
-          }}</RouterLink>
+          <RouterLink
+            v-for="sub in item.children?.slice(0, 2)"
+            :key="sub.id"
+            :to="`category/sub/${sub.id} `"
+            >{{ sub.name }}</RouterLink
+          >
         </template>
         <!-- 骨架屏 -->
         <template v-else>
           <XtxSkeleton animated :width="70" :height="20" bg="rgba(255, 255, 255, 0.2)" />
-          <XtxSkeleton style="margin-left: 10px" animated :width="40" :height="20" bg="rgba(255, 255, 255, 0.2)" />
+          <XtxSkeleton
+            style="margin-left: 10px"
+            animated
+            :width="40"
+            :height="20"
+            bg="rgba(255, 255, 255, 0.2)"
+          />
         </template>
       </li>
     </ul>
@@ -43,8 +57,8 @@ const goods = computed(() => category.list.find(item => item.id === categoryId.v
       <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
       <ul>
         <li v-for="item in goods" :key="item.id">
-          <RouterLink to="/">
-            <img :src="item.picture" alt="">
+          <RouterLink :to="`/goods/${item.id}`">
+            <img :src="item.picture" alt="" />
             <div class="info">
               <p class="name ellipsis-2">{{ item.name }}</p>
               <p class="desc ellipsis">{{ item.desc }}</p>
@@ -55,8 +69,6 @@ const goods = computed(() => category.list.find(item => item.id === categoryId.v
       </ul>
     </div>
   </div>
-
-
 </template>
 
 <style scoped lang="less">

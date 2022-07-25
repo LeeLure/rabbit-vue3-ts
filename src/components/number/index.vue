@@ -1,26 +1,27 @@
 <script lang="ts" setup name="XtxNumbox">
 //
 const props = defineProps<{
-  modelValue: number
-  min: number
-  max: number
-  showLable?: boolean
-}>()
+  modelValue: number;
+  min?: number;
+  max?: number;
+  showLable?: boolean;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', val: number): void
-}>()
+  (e: "update:modelValue", val: number): void;
+}>();
 
 const sub = () => {
-  if (props.modelValue <= props.min) return
-  emit('update:modelValue', props.modelValue - 1)
-}
+  // if (props.modelValue <= props.min) return;
+  if (props.min && props.modelValue <= props.min) return;
+  emit("update:modelValue", props.modelValue - 1);
+};
 
 const add = () => {
-  if (props.modelValue >= props.max) return
-  emit('update:modelValue', props.modelValue + 1)
-}
-
+  // if (props.modelValue >= props.max) return;
+  if (props.max && props.modelValue >= props.max) return;
+  emit("update:modelValue", props.modelValue + 1);
+};
 </script>
 <template>
   <div class="xtx-numbox">
@@ -50,7 +51,7 @@ const add = () => {
     border: 1px solid #e4e4e4;
     display: flex;
 
-    >a {
+    > a {
       width: 29px;
       line-height: 28px;
       text-align: center;
@@ -67,7 +68,7 @@ const add = () => {
       }
     }
 
-    >input {
+    > input {
       width: 60px;
       padding: 0 5px;
       text-align: center;

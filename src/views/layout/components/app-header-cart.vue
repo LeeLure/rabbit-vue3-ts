@@ -13,9 +13,9 @@ const hDel = async (skuId: string) => {
 
 <template>
   <div class="cart">
-    <a class="curr" href="javascript:;">
+    <router-link to="/cart" class="curr">
       <i class="iconfont icon-cart"></i><em>{{ cart.effectiveCounts }}</em>
-    </a>
+    </router-link>
     <!-- 
       两种情况下购物车不要显示:
       1. 没有购物车数据了
@@ -45,7 +45,7 @@ const hDel = async (skuId: string) => {
           <p>共 {{ cart.effectiveCounts }} 件商品</p>
           <p>&yen;{{ cart.effectivePrice }}</p>
         </div>
-        <XtxButton type="plain">去购物车结算</XtxButton>
+        <XtxButton type="plain" @click="$router.push('/cart')">去购物车结算</XtxButton>
       </div>
     </div>
   </div>

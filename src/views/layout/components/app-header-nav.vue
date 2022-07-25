@@ -3,11 +3,18 @@
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li @mousemove="category.show(item.id)" @mouseleave="category.hide(item.id)" @click="category.hide(item.id)"
-      v-for="item in category.list" :key="item.id">
+    <li
+      @mousemove="category.show(item.id)"
+      @mouseleave="category.hide(item.id)"
+      @click="category.hide(item.id)"
+      v-for="item in category.list"
+      :key="item.id"
+    >
       <!-- bug：    数据还未请求回来、点击一级分类时地址栏出现 undefined -->
       <!-- bug解决: 如果没有数据，跳转首页 -->
-      <RouterLink :to="item.id ? `/category/${item.id}` : '/'">{{ item.name }}</RouterLink>
+      <RouterLink :to="item.id ? `/category/${item.id}` : '/'">{{
+        item.name
+      }}</RouterLink>
       <!-- v-if: 优化网速慢 hover 时显示空盒子 -->
       <div :class="{ show: item.show }" class="layer" v-if="item.children">
         <ul>
@@ -24,9 +31,9 @@
 </template>
 
 <script setup lang="ts">
-import useStore from '@/store'
+import useStore from "@/store";
 
-const { category } = useStore()
+const { category } = useStore();
 
 // 获取头部分类
 // bug 解决：getAllCategory 重复调用，故在 layout/index.vue 调用
@@ -41,12 +48,12 @@ const { category } = useStore()
   position: relative;
   z-index: 998;
 
-  >li {
+  > li {
     margin-right: 40px;
     width: 38px;
     text-align: center;
 
-    >a {
+    > a {
       font-size: 16px;
       line-height: 32px;
       height: 32px;
@@ -60,7 +67,7 @@ const { category } = useStore()
 
     // 新增样式
     &:hover {
-      >a {
+      > a {
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }

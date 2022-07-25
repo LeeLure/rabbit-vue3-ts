@@ -1,11 +1,11 @@
 <script lang="ts" setup name="XtxCheckbox">
 defineProps<{
-  modelValue: boolean
+  modelValue?: boolean;
   // label?: string
-}>()
+}>();
 const emit = defineEmits<{
-  (e: 'update:modelValue', val: boolean): void
-}>()
+  (e: "update:modelValue", val: boolean): void;
+}>();
 </script>
 
 <template>
@@ -27,7 +27,7 @@ const emit = defineEmits<{
   .icon-checked {
     color: @xtxColor;
 
-    ~span {
+    ~ span {
       color: @xtxColor;
     }
   }
