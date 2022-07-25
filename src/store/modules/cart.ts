@@ -12,6 +12,8 @@ export default defineStore('cart', {
   actions: {
     async addCart(data: { skuId: string, count: number }) {
       await axios.post('/member/cart', data)
+      // 重新获取购物车列表
+      this.getCartList()
     },
 
     // 购物车列表
@@ -19,6 +21,17 @@ export default defineStore('cart', {
       const res = await axios.get<ApiRes<CartItem[]>>('/member/cart')
       // console.log(res)
       this.list = res.data.result
+    },
+
+    // 删除
+    async deleteCart(skuIds: string[]) {
+      await axios.delete('/member/cart', {
+        data: {
+          ids: skuIds
+        }
+      })
+      // 重新获取购物车数据
+      this.getCartList()
     }
   },
 

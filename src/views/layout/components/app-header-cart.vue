@@ -4,6 +4,11 @@ import useStore from "@/store";
 const { cart } = useStore();
 
 cart.getCartList();
+
+// 删除
+const hDel = async (skuId: string) => {
+  await cart.deleteCart([skuId]);
+};
 </script>
 
 <template>
@@ -11,7 +16,12 @@ cart.getCartList();
     <a class="curr" href="javascript:;">
       <i class="iconfont icon-cart"></i><em>{{ cart.effectiveCounts }}</em>
     </a>
-    <div class="layer">
+    <!-- 
+      两种情况下购物车不要显示:
+      1. 没有购物车数据了
+      2. 已经在购物车页面了
+    -->
+    <div class="layer" v-if="cart.effectiveList.length > 0 && $route.path !== '/cart'">
       <div class="list">
         <div class="item" v-for="item in cart.effectiveList" :key="item.skuId">
           <RouterLink :to="`/goods/${item.id}`">
@@ -27,7 +37,7 @@ cart.getCartList();
               <p class="count">x{{ item.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new"></i>
+          <i class="iconfont icon-close-new" @click="hDel(item.skuId)"></i>
         </div>
       </div>
       <div class="foot">
