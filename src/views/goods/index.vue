@@ -9,6 +9,7 @@ import GoodsSku from "./components/goods-sku.vue";
 import GoodsDetail from "./components/goods-detail.vue";
 import GoodsHot from "./components/goods-hot.vue";
 import { Message } from "@/components/message";
+import { CartItem } from "@/types/cart";
 const { goods, cart } = useStore();
 
 const route = useRoute();
@@ -47,9 +48,19 @@ const addCart = async () => {
   if (!currentSkuId.value) return Message.warning("请选择完整的规格");
   // console.log('我要加入购物车')
   await cart.addCart({
-    skuId: currentSkuId.value,
+    // 本地添加
+    id: goods.info.id,
+    name: goods.info.name,
+    picture: goods.info.mainPictures[0],
+    price: goods.info.price,
     count: count.value,
-  });
+    skuId: currentSkuId.value,
+    attrsText: "", // 暂时没写, 后期要改为: 颜色: 黑色 尺寸: 20cm 产地: 中国
+    selected: true,
+    nowPrice: goods.info.price,
+    stock: goods.info.inventory,
+    isEffective: true,
+  } as CartItem);
   // 提醒用户
   Message.success("加入购物车成功");
 };
