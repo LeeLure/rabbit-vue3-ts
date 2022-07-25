@@ -1,56 +1,73 @@
 <script lang="ts" setup>
-import useStore from '@/store';
-import { ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
-import GoodsImage from './components/goods-image.vue';
-import GoodsSales from './components/goods-sales.vue';
-import GoodsName from './components/goods-name.vue';
-import GoodsSku from './components/goods-sku.vue';
-import GoodsDetail from './components/goods-detail.vue';
-import GoodsHot from './components/goods-hot.vue';
+import useStore from "@/store";
+import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+import GoodsImage from "./components/goods-image.vue";
+import GoodsSales from "./components/goods-sales.vue";
+import GoodsName from "./components/goods-name.vue";
+import GoodsSku from "./components/goods-sku.vue";
+import GoodsDetail from "./components/goods-detail.vue";
+import GoodsHot from "./components/goods-hot.vue";
+import { Message } from "@/components/message";
+const { goods, cart } = useStore();
 
-const { goods } = useStore()
-
-const route = useRoute()
+const route = useRoute();
 
 // 组件缓存：因为路由的 id 变化了，组件并没有改变
 // watchEffect 用于解决组件缓存的问题
 watchEffect(() => {
-  if (route.fullPath !== '/goods/' + route.params.id) return
+  if (route.fullPath !== "/goods/" + route.params.id) return;
 
   // 先清空组件缓存
-  goods.resetGoodsInfo()
+  goods.resetGoodsInfo();
 
   // 再请求数据
-  goods.getGoodsInfo(route.params.id as string)
-})
+  goods.getGoodsInfo(route.params.id as string);
+});
 
 const hChangeSku = (skuId: string) => {
   // console.log('父组件得到的 skuId:', skuId)
   // 根据 skuId 找到 sku 对象
-  const sku = goods.info.skus.find(item => item.id === skuId)
+  currentSkuId.value = skuId;
+  const sku = goods.info.skus.find((item) => item.id === skuId);
   // console.log(sku)
   // 找不到就 return
-  if (!sku) return
+  if (!sku) return;
   // 修改商品价格 (此处应该定义 pinia 中的 actions 后修改)
-  goods.info.price = sku.price
-  goods.info.oldPrice = sku.oldPrice
-}
+  goods.info.price = sku.price;
+  goods.info.oldPrice = sku.oldPrice;
+};
 
-const count = ref(1)
+const count = ref(1);
+
+// 当前 sku Id
+const currentSkuId = ref("");
+
+const addCart = async () => {
+  if (!currentSkuId.value) return Message.warning("请选择完整的规格");
+  // console.log('我要加入购物车')
+  await cart.addCart({
+    skuId: currentSkuId.value,
+    count: count.value,
+  });
+  // 提醒用户
+  Message.success("加入购物车成功");
+};
 </script>
 <template>
   <div class="xtx-goods-page">
     <div class="container">
       <!-- 面包屑 -->
       <!-- 高度：加载时面包屑脱标 -->
-      <div style="height: 70px;">
+      <div style="height: 70px">
         <transition name="fade-in-out">
           <XtxBread v-if="goods.info.categories">
             <XtxBreadItem to="/">首页</XtxBreadItem>
-            <XtxBreadItem :to="`/category/${goods.info.categories[1].id}`">{{ goods.info.categories[1].name }}
+            <XtxBreadItem :to="`/category/${goods.info.categories[1].id}`"
+              >{{ goods.info.categories[1].name }}
             </XtxBreadItem>
-            <XtxBreadItem :to="`/category/sub/${goods.info.categories[0].id}`">{{ goods.info.categories[0].name }}
+            <XtxBreadItem :to="`/category/sub/${goods.info.categories[0].id}`"
+              >{{ goods.info.categories[0].name }}
             </XtxBreadItem>
             <XtxBreadItem>{{ goods.info.name }}</XtxBreadItem>
           </XtxBread>
@@ -65,7 +82,13 @@ const count = ref(1)
               <XtxSkeleton opacity="0.2" bg="#27bb9a" animated :width="76" :height="18" />
             </XtxBreadItem>
             <XtxBreadItem>
-              <XtxSkeleton opacity="0.2" bg="#27bb9a" animated :width="156" :height="18" />
+              <XtxSkeleton
+                opacity="0.2"
+                bg="#27bb9a"
+                animated
+                :width="156"
+                :height="18"
+              />
             </XtxBreadItem>
           </XtxBread>
         </transition>
@@ -86,13 +109,15 @@ const count = ref(1)
             2. 传入 skuId 会自动勾选, 无货不会勾选
             3. 当全部规格勾选后会返回一个 skuId 供父组件使用
            -->
-          <GoodsSku @change-sku="hChangeSku" sku-id="1369155864430120962" :goods="goods.info" />
+          <GoodsSku @change-sku="hChangeSku" :goods="goods.info" />
 
           <!-- 商品数量 -->
-          <XtxNumbox v-model="count" showLable :min="1" :max="99" />
+          <XtxNumbox v-model="count" showLable :min="1" :max="goods.info.inventory" />
 
           <!-- 按钮 -->
-          <XtxButton type="primary" style="margin-top: 20px;">加入购物车</XtxButton>
+          <XtxButton type="primary" style="margin-top: 20px" @click="addCart"
+            >加入购物车</XtxButton
+          >
         </div>
       </div>
 

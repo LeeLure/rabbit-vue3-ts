@@ -1,4 +1,5 @@
 import { Message } from '@/components/message'
+import useStore from '@/store'
 import axios, { AxiosError } from 'axios'
 
 // 备用接口地址: http://pcapi-xiaotuxian-front-devtest.itheima.net/
@@ -15,6 +16,11 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    // 数据在 pinia 所以直接 useStore 获取 token
+    const { user } = useStore()
+    if (user.profile.token) {
+      config.headers!.Authorization = 'Bearer ' + user.profile.token
+    }
     return config
   },
   function (error) {
