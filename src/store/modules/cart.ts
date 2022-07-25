@@ -51,6 +51,11 @@ export default defineStore('cart', {
       })
       // 重新获取购物车数据
       this.getCartList()
+    },
+
+    // 清空购物车
+    clearCart() {
+      this.list = []
     }
   },
 

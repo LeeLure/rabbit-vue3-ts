@@ -1,3 +1,4 @@
+import useStore from '@/store';
 import { ApiRes } from './../../types/data.d';
 import { defineStore } from 'pinia'
 import axios from '@/utils/request'
@@ -44,6 +45,9 @@ export default defineStore('user', {
       this.profile = {} as Profile
       // 清除 localStorage 的信息
       removeProfile()
+      // 清空购物车
+      const { cart } = useStore()
+      cart.clearCart()
     },
 
     // QQ登录
