@@ -1,28 +1,39 @@
 <script lang="ts" setup name="XtxConfirm">
 // 不能使用全局组件 button 就导进来使用局部组件
 import XtxButton from "@/components/button/index.vue";
+import { onMounted, ref } from "vue";
 defineProps<{
   title: string;
   text: string;
+  cancelCallback: () => void;
+  confirmCallback: () => void;
 }>();
+
+const isShow = ref(false);
+
+onMounted(() => {
+  isShow.value = true;
+});
 </script>
 <template>
-  <div class="xtx-confirm">
-    <div class="wrapper">
-      <div class="header">
-        <h3>{{ title }}</h3>
-        <a href="JavaScript:;" class="iconfont icon-close-new"></a>
-      </div>
-      <div class="body">
-        <i class="iconfont icon-warning"></i>
-        <span>{{ text }}</span>
-      </div>
-      <div class="footer">
-        <XtxButton size="mini" type="gray">取消</XtxButton>
-        <XtxButton size="mini" type="primary">确认</XtxButton>
+  <Transition name="fade-in-out">
+    <div class="xtx-confirm">
+      <div class="wrapper">
+        <div class="header">
+          <h3>{{ title }}</h3>
+          <a href="JavaScript:;" class="iconfont icon-close-new"></a>
+        </div>
+        <div class="body">
+          <i class="iconfont icon-warning"></i>
+          <span>{{ text }}</span>
+        </div>
+        <div class="footer">
+          <XtxButton size="mini" type="gray" @click="cancelCallback">取消</XtxButton>
+          <XtxButton size="mini" type="primary" @click="confirmCallback">确认</XtxButton>
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <style scoped lang="less">
