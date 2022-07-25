@@ -3,8 +3,15 @@ import { QQUserInfo, QQUserInfoRes } from "@/types/user";
 import { codeRule, mobileRule } from "@/utils/validate";
 import { useField, useForm } from "vee-validate";
 import { ref } from "vue";
+import useStore from "@/store";
+import { Message } from "@/components/message";
+import router from "@/router";
+import { useCountDown } from "@/utils/hooks";
 
+const { user } = useStore();
 const qqInfo = ref<QQUserInfo>();
+let openId = "";
+
 // 获取登录状态
 const isLogin = QC.Login.check();
 if (isLogin) {
@@ -15,6 +22,11 @@ if (isLogin) {
     qqInfo.value = res.data;
   });
 }
+
+// 获取 openId
+QC.Login.getMe((id) => {
+  openId = id;
+});
 
 // 定义校验规则
 const { validate } = useForm({
@@ -32,20 +44,37 @@ const {
 
 const { value: code, errorMessage: codeMessage } = useField<string>("code");
 
+const { time, start } = useCountDown(59);
+
 const send = async () => {
   // 兜底校验 => 手机号
   const res = await validateMobile();
-  if (!res.valid) return;
+  // if (!res.valid) return;
   // console.log('发送短信验证码')
+  // 如果正在倒计时, 就不能再次发送短信了
+  if (time.value > 0) return;
+  start();
+  // console.log('发送短信验证码')
+  await user.bindQQSms(mobile.value);
+  Message.success("短信发送成功");
 };
 
 const bind = async () => {
   // 兜底校验
   const res = await validate();
   if (!res.valid) return;
+
   // console.log('发请求绑定账号')
+  await user.bindQQ({
+    unionId: openId,
+    mobile: mobile.value,
+    code: code.value,
+  });
+  Message.success("绑定成功");
+  router.push("/");
 };
 </script>
+
 <template>
   <div class="xtx-form">
     <div class="user-info">
@@ -63,7 +92,9 @@ const bind = async () => {
       <div class="field">
         <i class="icon iconfont icon-code"></i>
         <input v-model="code" class="input" type="text" placeholder="短信验证码" />
-        <span class="code" @click="send">发送验证码</span>
+        <span class="code" @click="send">{{
+          time === 0 ? "发送验证码" : `${time}s后发送`
+        }}</span>
       </div>
       <div class="error">{{ codeMessage }}</div>
     </div>

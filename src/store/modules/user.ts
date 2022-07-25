@@ -51,6 +51,40 @@ export default defineStore('user', {
       const res = await axios.post<ApiRes<Profile>>('/login/social', data)
       this.profile = res.data.result
       setProfile(res.data.result)
+    },
+
+    async bindQQSms(mobile: string) {
+      await axios.get('/login/social/code', {
+        params: {
+          mobile
+        }
+      })
+    },
+
+    // 绑定账号
+    async bindQQ(data: { unionId: string, mobile: string, code: string }) {
+      const res = await axios.post<ApiRes<Profile>>('/login/social/bind', data)
+      this.profile = res.data.result
+      setProfile(res.data.result)
+    },
+
+    async sendQQPathMsg(mobile: string) {
+      await axios.get('/register/code', {
+        params: {
+          mobile
+        }
+      })
+    },
+
+    async qqPatchLogin(data: any) {
+      const res = await axios.post<ApiRes<Profile>>(
+        `/login/social/${data.openId}/complement`,
+        data
+      )
+      // 1. 保存用户信息到 state 中
+      this.profile = res.data.result
+      setProfile(res.data.result)
+
     }
   }
 })
