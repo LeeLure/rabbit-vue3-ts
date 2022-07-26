@@ -11,6 +11,7 @@ import Numbox from './number/index.vue'
 import Button from './button/index.vue'
 import CheckBox from './checkbox/index.vue'
 import Dialog from './dialog/index.vue'
+import Switch from './swith/index.vue'
 
 
 export default {
@@ -35,6 +36,8 @@ export default {
     app.component(CheckBox.name, CheckBox)
     // Didlog
     app.component(Dialog.name, Dialog)
+    // 开关
+    app.component(Switch.name, Switch)
 
 
 
