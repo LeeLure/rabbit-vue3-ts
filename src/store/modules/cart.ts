@@ -6,6 +6,12 @@ import { ApiRes } from '@/types/data'
 import { Confirm } from '@/components/confirm'
 
 export default defineStore('cart', {
+  // 本地化
+  // persist: true,
+  persist: {
+    key: 'rabbit-ts-list'
+  },
+
   state() {
     return {
       list: [] as CartItem[]

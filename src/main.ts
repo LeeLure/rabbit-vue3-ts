@@ -13,7 +13,10 @@ import router from './router'
 // 导入 pinia 并注册
 import { createPinia } from 'pinia'
 
+// 导入 pinia 持久化插件
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
 // 导入全局组件
 import XtxUI from '@/components'
 
-createApp(App).use(router).use(XtxUI).use(createPinia()).mount('#app')
+createApp(App).use(router).use(XtxUI).use(createPinia().use(piniaPluginPersistedstate)).mount('#app')
