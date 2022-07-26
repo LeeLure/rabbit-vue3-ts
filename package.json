@@ -11,6 +11,7 @@
     "@types/node": "^18.0.1",
     "@vueuse/core": "^8.8.0",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.4",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate": "^1.6.3",

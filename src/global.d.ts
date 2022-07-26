@@ -8,6 +8,7 @@ import XtxNumBox from '@/components/number/index.vue'
 import XtxButton from '@/components/button/index.vue'
 import XtxCheckBox from '@/components/checkbox/index.vue'
 import XtxDialog from '@/components/dialog/index.vue'
+import XtxSwitch from '@/components/switch/index.vue'
 
 // 参考：
 declare module 'vue' {
@@ -23,6 +24,7 @@ declare module 'vue' {
     XtxButton: typeof XtxButton
     XtxCheckBox: typeof XtxCheckBox
     XtxDialog: typeof XtxDialog
+    XtxSwitch: typeof XtxSwitch
   }
 }
 export { }

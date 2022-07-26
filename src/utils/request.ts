@@ -2,13 +2,15 @@ import { Message } from '@/components/message'
 import useStore from '@/store'
 import axios, { AxiosError } from 'axios'
 
+export const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
+
 // 备用接口地址: http://pcapi-xiaotuxian-front-devtest.itheima.net/
 // https://apipc-xiaotuxian-front.itheima.net
 const instance = axios.create({
   // baseURL: 'http://pcapi-xiaotuxian-front.itheima.net/',
   // baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net/',
   // baseURL: 'https://apipc-xiaotuxian-front.itheima.net',
-  baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net/', // 已绑定
+  baseURL, // 已绑定
   timeout: 5000
 })
 
