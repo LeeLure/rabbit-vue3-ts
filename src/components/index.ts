@@ -10,6 +10,7 @@ import City from './city/index.vue'
 import Numbox from './number/index.vue'
 import Button from './button/index.vue'
 import CheckBox from './checkbox/index.vue'
+import Dialog from './dialog/index.vue'
 
 
 export default {
@@ -32,6 +33,8 @@ export default {
     app.component(Numbox.name, Numbox)
     // 复选框
     app.component(CheckBox.name, CheckBox)
+    // Didlog
+    app.component(Dialog.name, Dialog)
 
 
 
