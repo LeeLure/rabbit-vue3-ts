@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import useStore from "@/store";
-import { ref, watchEffect } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import GoodsImage from "./components/goods-image.vue";
 import GoodsSales from "./components/goods-sales.vue";
@@ -47,6 +47,10 @@ const currentSkuId = ref("");
 const addCart = async () => {
   if (!currentSkuId.value) return Message.warning("请选择完整的规格");
   // console.log('我要加入购物车')
+  // 当前需要添加的商品的sku
+  const sku = goods.info.skus.find((item) => item.id === currentSkuId.value);
+  const attrsText = sku?.specs.map((item) => item.name + ": " + item.valueName).join(" ");
+
   await cart.addCart({
     // 本地添加
     id: goods.info.id,
@@ -55,7 +59,7 @@ const addCart = async () => {
     price: goods.info.price,
     count: count.value,
     skuId: currentSkuId.value,
-    attrsText: "", // 暂时没写, 后期要改为: 颜色: 黑色 尺寸: 20cm 产地: 中国
+    attrsText, // 颜色: 黑色 尺寸: 20cm 产地: 中国
     selected: true,
     nowPrice: goods.info.price,
     stock: goods.info.inventory,

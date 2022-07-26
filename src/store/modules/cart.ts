@@ -45,6 +45,13 @@ export default defineStore('cart', {
         this.list = res.data.result
       } else {
         // 获取本地数据
+        this.list.forEach(async sku => {
+          const res = await axios.get<ApiRes<CartItem>>('/goods/stock/' + sku.skuId)
+          const { nowPrice, stock, isEffective } = res.data.result
+          sku.nowPrice = nowPrice
+          sku.stock = stock
+          sku.isEffective = isEffective
+        })
       }
     },
 
@@ -52,34 +59,69 @@ export default defineStore('cart', {
     async deleteCart(skuIds: string[]) {
       await Confirm({ title: '提示', text: '确定要删除吗?' })
 
-      await axios.delete('/member/cart', {
-        data: {
-          ids: skuIds
-        }
-      })
-      // 重新获取购物车数据
-      this.getCartList()
+      if (this.isLogin) {
+        await axios.delete('/member/cart', {
+          data: {
+            ids: skuIds
+          }
+        })
+        // 重新获取购物车数据
+        this.getCartList()
+      } else {
+        // 将用户传递过来的 skuId 对应的数据删除
+        // 筛选出不在 skuIds 数组中的数据, 然后覆盖回 list 即可
+        this.list = this.list.filter(item => !skuIds.includes(item.skuId))
+      }
     },
 
     // 购物车
     async updateCart(skuId: string, data: { selected?: boolean, count?: number }) {
-      await axios.put('/member/cart/' + skuId, data)
-      // 重新获取购物车数据
-      this.getCartList()
+      if (this.isLogin) {
+        await axios.put('/member/cart/' + skuId, data)
+        // 重新获取购物车数据
+        this.getCartList()
+      } else {
+        // 修改本地的数据
+        // 1. 根据 skuId 找到对应的 sku
+        const sku = this.list.find(item => item.skuId === skuId)
+        // 2. 修改其选中状态和数量
+        if (data.selected !== undefined) { // 如果就是想改为 false 
+          sku!.selected = data.selected
+        }
+        if (data.count !== undefined) {
+          sku!.count = data.count
+        }
+      }
     },
 
     // 全选
     async updateCartAllSelected(selected: boolean) {
-      await axios.put('/member/cart/selected', {
-        selected
-      })
-      // 重新获取购物车数据
-      this.getCartList()
+      if (this.isLogin) {
+        await axios.put('/member/cart/selected', {
+          selected
+        })
+        // 重新获取购物车数据
+        this.getCartList()
+      } else {
+        this.list.forEach(item => item.selected = selected)
+      }
     },
 
     // 清空购物车
     clearCart() {
       this.list = []
+    },
+
+    // 合并购物车
+    async mergeLocalCart() {
+      const data = this.list.map(item => ({
+        skuId: item.skuId,
+        selected: item.selected,
+        count: item.count
+      }))
+      await axios.post('/member/cart/merge', data)
+      // 重新获取购物车列表
+      this.getCartList()
     }
   },
 

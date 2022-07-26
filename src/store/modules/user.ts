@@ -23,11 +23,17 @@ export default defineStore('user', {
 
       // 本地化
       setProfile(res.data.result)
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     // 获取手机验证码
     async sendMobileMsg(mobile: string) {
       await axios.get('/login/code', { params: { mobile } })
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     // 短信登录
@@ -38,6 +44,9 @@ export default defineStore('user', {
 
       // 本地化
       setProfile(res.data.result)
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     logout() {
@@ -55,6 +64,9 @@ export default defineStore('user', {
       const res = await axios.post<ApiRes<Profile>>('/login/social', data)
       this.profile = res.data.result
       setProfile(res.data.result)
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     async bindQQSms(mobile: string) {
@@ -63,6 +75,9 @@ export default defineStore('user', {
           mobile
         }
       })
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     // 绑定账号
@@ -70,6 +85,9 @@ export default defineStore('user', {
       const res = await axios.post<ApiRes<Profile>>('/login/social/bind', data)
       this.profile = res.data.result
       setProfile(res.data.result)
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     async sendQQPathMsg(mobile: string) {
@@ -78,6 +96,9 @@ export default defineStore('user', {
           mobile
         }
       })
+
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     },
 
     async qqPatchLogin(data: any) {
@@ -89,6 +110,8 @@ export default defineStore('user', {
       this.profile = res.data.result
       setProfile(res.data.result)
 
+      const { cart } = useStore()
+      cart.mergeLocalCart()
     }
   }
 })
