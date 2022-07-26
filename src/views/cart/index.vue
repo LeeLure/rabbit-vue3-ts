@@ -1,8 +1,18 @@
 <script setup lang="ts" name="Cart">
+import { Message } from "@/components/message";
 import useStore from "@/store";
+import { useRouter } from "vue-router";
 
 // 导入 pinia 的数据
 const { cart } = useStore();
+
+const router = useRouter();
+
+const gotoCheckout = () => {
+  // 如果一件都没选中需要提醒用户
+  if (cart.selectedList.length === 0) return Message.warning("请至少选中一件商品~");
+  router.push("/member/checkout");
+};
 </script>
 
 <template>
@@ -102,7 +112,7 @@ const { cart } = useStore();
           共 {{ cart.effectiveCounts }} 件有效商品，已选择
           {{ cart.selectedCounts }} 件，商品合计：
           <span class="red">¥{{ cart.selectedPrice }}</span>
-          <XtxButton type="primary">下单结算</XtxButton>
+          <XtxButton type="primary" @click="gotoCheckout">下单结算</XtxButton>
         </div>
       </div>
     </div>

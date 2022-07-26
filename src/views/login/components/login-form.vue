@@ -2,7 +2,7 @@
 import { Message } from "@/components/message";
 import { ref, watch } from "vue";
 import useStore from "@/store";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useField, useForm } from "vee-validate";
 import { useCountDown } from "@/utils/hooks";
 import {
@@ -20,6 +20,7 @@ const active = ref<"account" | "mobile">("account");
 const { user } = useStore();
 
 const router = useRouter();
+const route = useRoute();
 
 // 表单校验库 vee-validate 给我们提供了响应式数据, 所以不需要单独定义了
 // const form = ref({
@@ -66,7 +67,9 @@ const login = async () => {
   Message.success("登录成功!");
 
   // 跳转首页
-  router.push("/");
+  // router.push("/");
+  // 跳转到之前的页面
+  router.push((route.query.redirectUrl as string) || "/");
 };
 
 // 实时校验提醒用户
